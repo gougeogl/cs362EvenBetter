@@ -36,7 +36,7 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("*** START Bug1 Unit Test *** .\n");
+	printf("*** START Bug1 Unit Test ***\n");
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -195,7 +195,7 @@ int main()
 		printf("Error Mine: choice2 silver is not -1 previous supplyCount.\n\n");
 	}
 
-	printf("*** END Bug1 Unit Test *** .\n\n");
+	printf("*** END Bug1 Unit Test ***\n\n");
 	return 0;
 }
 

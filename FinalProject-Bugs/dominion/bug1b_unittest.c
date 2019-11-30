@@ -84,7 +84,7 @@ int main()
 	backup = G;
 
 	/* CALL TO REMODEL <-----------------------------------------------------*/
-	cardEffect(remodel, idxOfChoice1, moneyToGet, blank, &G, blank, &coinBonus);
+	cardEffect(remodel, idxOfChoice1, cardToGet, blank, &G, blank, &coinBonus);
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */
@@ -163,6 +163,7 @@ int main()
 		printf("Error Remodel: choice2 estate is not -1 previous supplyCount.\n\n");
 	}
 
+	printf("*** END Bug1-B Unit Test ***\n\n");
 	return 0;
 }
 

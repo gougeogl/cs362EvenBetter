@@ -47,12 +47,22 @@ runtests: testDrawCard
 bug1unittest: bug1unittest.c dominion.o rngs.o interface.o
 	${CC} ${CFLAGS} -g -o bug1unittest bug1unittest.c dominion.o rngs.o interface.o
 
-unittestresults: bug1unittest
+# ***********************************************************************************
+
+bug1b_unittest: bug1b_unittest.c dominion.o rngs.o interface.o
+	${CC} ${CFLAGS} -g -o bug1b_unittest bug1b_unittest.c dominion.o rngs.o interface.o
+
+# ***********************************************************************************
+
+unittestresults: bug1unittest bug1b_unittest
 	./bug1unittest &> unittestresults.out
+	./bug1b_unittest >> unittestresults.out
 	${COV} ${COV_FLAGS} dominion.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug1unittest.c >> unittestresults.out
+	${COV} ${COV_FLAGS} bug1b_unittest.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out
 	cat bug1unittest.c.gcov >> unittestresults.out
+	cat bug1b_unittest.c.gcov >> unittestresults.out
 
 # ***********************************************************************************
 
@@ -69,4 +79,4 @@ all: playdom player
 clean:
 	rm -f *.o playdom player *.gcov *.gcda *.gcno *.so *.out *.exe
 	rm -f playdom player testDrawCard 
-	rm -f bug1unittest
+	rm -f bug1unittest bug1b_unittest

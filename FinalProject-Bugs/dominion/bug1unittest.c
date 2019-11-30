@@ -90,22 +90,6 @@ int main()
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 
-	/* Assert that the choice1 card is found at the top of the trashPile,
-		otherwise print that it is missing. */
-	if(G.trashPile[G.trashCount -1] != backup.hand[currentPlayer][idxOfChoice1])
-	{
-		char name[MAX_STRING_LENGTH];
-		memset(name, '\0', sizeof(name));
-		cardNumToName(backup.hand[currentPlayer][idxOfChoice1], name);
-
-		char nombre[MAX_STRING_LENGTH];
-		memset(nombre, '\0', sizeof(nombre));
-		cardNumToName(G.trashPile[G.trashCount -1], nombre);
-
-		printf("Error Mine: previous choice1 not found at top of discard pile.\n");
-		printf("BEFORE: choice1 at hand[%d]: %s\n", idxOfChoice1, name);
-		printf("AFTER: trashPile[%d]: %s\n\n", G.trashCount - 1, nombre);
-	}
 	/*	Assert that choice1(an index) is a different card, otherwise print that it
 		is the same. */
 	if(backup.hand[currentPlayer][idxOfChoice1] == backup.hand[currentPlayer][idxOfChoice1])
@@ -113,12 +97,6 @@ int main()
 		printf("Error Mine: choice1 is still the same but shouldn't be.\n\n");
 	}
 
-	/*	Assert that the trashCount is 1 greater than the previous trashCount,
-		otherwise print that "trashCount is not +1 previous." */
-	if (backup.trashCount + 1 != G.trashCount);
-	{
-		printf("Error Mine: trashCount is still the same but shouldn't be.\n\n");
-	}
 	/*	Assert that the discardCount has not changed, otherwise print
 		'discardCount changed but shouldn't have'. */
 	if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])

@@ -20,22 +20,6 @@
 #include "interface.h"
 #include "rngs.h"
 
-enum TEST_FLAGS
-{
-	SAME_HAND = 800,
-	DIFFERENT_HAND,
-	SAME_DECK,
-	DIFFERENT_DECK,
-	SAME_DISCARD,
-	DIFFERENT_DISCARD,
-	PLUS_2_COINS,
-	SAME_COINS,
-	/* used by prep functions */
-	FILL_DIFF,
-	FILL_SAME
-};
-
-
 // TEST PROTO-TYPES
 void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game);
 
@@ -48,34 +32,14 @@ void emptyHand(int player, struct gameState* dState);
 void setNewHandCount(int player, struct gameState* state, int newHandSize);
 void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 
-// COMPARISION PROTO-TYPES
-int compareCoins(int player, struct gameState* before, struct gameState* after, int flag);
-int compareNumActionsTribute(int player, struct gameState* before, struct gameState* after);
-int compareHand(int player, struct gameState* before, struct gameState* after, int flag);
-int compareDeck(int player, struct gameState* before, struct gameState* after, int limit, int flag);
-int compareTopsAfter(int player, int* deckTops, int* discardTops);
-void setTypesFoundTribute(int* oldDeckTops, int* coin_count, int* draw_card_count, int* num_actions_count);
-
-// SAVE VALUES PROTO-TYPES
-void savePreviousHandCounts(int* container, struct gameState* state);
-void savePreviousDeckCounts(int* container, struct gameState* state);
-void savePreviousDiscardCounts(int* container, struct gameState* state);
-
-void saveTop2Deck(int player, struct gameState* state, int* topTwo);
-void saveTop2Discard(int player, struct gameState* state, int* topTwo);
-
-/* selects a random card from kingdomCards deck */
-int _rand_of_kingdomCards();
-
-/* generate an int in range [min..max] */
-int _genRandRange(int min, int max);
-
 int main()
 {
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("*** START Bug1 Unit Test *** .\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
-	/* ** SETUP TEST SECTION ** /
+	/* ** SETUP TEST SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 
 	int kingdomCards[10] = { adventurer, ambassador, baron, estate, tribute, minion, mine,  gardens, remodel, smithy };
@@ -112,17 +76,17 @@ int main()
 	G.supplyCount[silver] = 1;
 
 	setAtHandPos(currentPlayer, &G, copper, idxOfChoice1);
-	updateCoins(currentPlayer, &G);
+	updateCoins(currentPlayer, &G, coinBonus);
 
 	/* BACK UP STATE BEFORE CALL */
 	memset(&backup, '\0', sizeof(backup));
 	backup = G;
 
 	/* CALL TO MINE <-----------------------------------------------------*/
-	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, blank, coinBonus);
+	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, blank, &coinBonus);
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
-	/* ** ASSERTS SECTION ** /
+	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 
 	/* Assert that the choice1 card is found at the top of the trashPile,
@@ -139,26 +103,26 @@ int main()
 
 		printf("Error Mine: previous choice1 not found at top of discard pile.\n");
 		printf("BEFORE: choice1 at hand[%d]: %s\n", idxOfChoice1, name);
-		printf("AFTER: trashPile[%d]: %s\n", G.trashCount - 1, nombre);
+		printf("AFTER: trashPile[%d]: %s\n\n", G.trashCount - 1, nombre);
 	}
 	/*	Assert that choice1(an index) is a different card, otherwise print that it
 		is the same. */
 	if(backup.hand[currentPlayer][idxOfChoice1] == backup.hand[currentPlayer][idxOfChoice1])
 	{
-		printf("Error Mine: choice1 is still the same but shouldn't be.\n");
+		printf("Error Mine: choice1 is still the same but shouldn't be.\n\n");
 	}
 
 	/*	Assert that the trashCount is 1 greater than the previous trashCount,
 		otherwise print that "trashCount is not +1 previous." */
 	if (backup.trashCount + 1 != G.trashCount);
 	{
-		printf("Error Mine: trashCount is still the same but shouldn't be.\n");
+		printf("Error Mine: trashCount is still the same but shouldn't be.\n\n");
 	}
 	/*	Assert that the discardCount has not changed, otherwise print
 		'discardCount changed but shouldn't have'. */
 	if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])
 	{
-		printf("Error Mine: discardCount changed but shouldn't have.\n");
+		printf("Error Mine: discardCount changed but shouldn't have.\n\n");
 	}
 
 	/*	Assert if top of previous discard was not the same as choice1, and
@@ -168,7 +132,7 @@ int main()
 	{
 		if (G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper)
 		{
-			printf("Error Mine: choice1 found at top of discard, but should at top of trashPile.\n");
+			printf("Error Mine: choice1 found at top of discard, but should at top of trashPile.\n\n");
 		}
 	}
 	/*	Assert if top of previous discard was the same as choice1, and the
@@ -177,9 +141,9 @@ int main()
 	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer]] == copper)
 	{
 		if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
-			(G.discard[currentPlayer][G.discardCount[currentPlayer] - 2] == copper)
+		    (G.discard[currentPlayer][G.discardCount[currentPlayer] - 2] == copper))
 		{
-			printf("Error Mine: choice1 discarded not trashed.\n");
+			printf("Error Mine: choice1 discarded not trashed.\n\n");
 		}
 	}
 
@@ -190,11 +154,12 @@ int main()
 	{
 		int prevHandCount = backup.handCount[currentPlayer];
 		int was_in_hand = 0;
-		int not_in_hand = 1;
+		int now_in_hand = 0;
 
 		int idx;
 		for (idx = 0; idx < prevHandCount; idx++)
 		{
+			// was it in hand ??
 			if (backup.hand[currentPlayer][idx] == moneyToGet)
 			{
 				was_in_hand = 1;
@@ -205,26 +170,30 @@ int main()
 			int iter;
 			for (iter = 0; iter < G.handCount[currentPlayer]; iter++)
 			{
+				// is it in hand now ??
 				if (G.hand[currentPlayer][iter] == moneyToGet)
 				{
-					not_in_hand == 0;
+					now_in_hand == 1;
 				}
+
+			}
+
+			if (now_in_hand == 0)
+			{
+				printf("Error Mine: choice1 not found in hand after the call.\n\n");
 			}
 		}
-		if (not_in_hand == 1)
-		{
-			printf("Error Mine: choice1 not found in hand after the call.\n");
-		}
+
 	}
 	/*	Compare the supplyCount[silver] before and after the call.If the
 		current count is not 1 less than previous, then print
 		'choice2 silver not 1 less than previous' */
 	if (backup.supplyCount[silver] - 1 != G.supplyCount[silver])
 	{
-		printf("Error Mine: choice2 silver is not -1 previous supplyCount.\n");
+		printf("Error Mine: choice2 silver is not -1 previous supplyCount.\n\n");
 	}
 
-	printf("*** END Bug1 Unit Test *** .\n");
+	printf("*** END Bug1 Unit Test *** .\n\n");
 	return 0;
 }
 

@@ -188,8 +188,6 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
     state->playedCardCount = 0;
     state->whoseTurn = 0;
     state->handCount[state->whoseTurn] = 0;
-	state->trashCount = 0; // req'd. for testing
-	state->trashPile[state->trashCount] = -1; // req'd. for testing
     //int it; move to top
 
     //Moved draw cards to here, only drawing at the start of a turn

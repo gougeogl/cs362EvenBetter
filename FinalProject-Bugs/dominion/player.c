@@ -7,7 +7,6 @@
 	1/26/2010
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -83,7 +82,6 @@ int main(int argc, char* argv[]) {
     initializeGame(2,kCards,randomSeed,game);
 
     printf("Please enter a command or \"help\" for commands\n");
-
 
     while(TRUE) {
         int arg0 = UNUSED;

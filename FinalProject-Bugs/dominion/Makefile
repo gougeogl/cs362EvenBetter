@@ -67,8 +67,8 @@ unittestresults: bug1unittest bug1b_unittest
 # ***********************************************************************************
 
 #To run playdom you need to entere: ./playdom <any integer number> like ./playdom 10*/
-playdom: playdom.c dominion.o
-	${CC} -g -o playdom playdom.c dominion.o rngs.o 
+playdom: playdom.c dominion.o rngs.o
+	${CC} ${CFLAGS} -g -o playdom playdom.c dominion.o rngs.o 
 
 player: player.c dominion.o rngs.o interface.o 
 	${CC} ${CFLAGS} -g -o player player.c dominion.o rngs.o interface.o 

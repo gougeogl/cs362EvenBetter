@@ -90,17 +90,17 @@ int main()
 	/* BACK UP STATE BEFORE CALL */
 	memset(&backup, '\0', sizeof(backup));
 	backup = G;
-
+	
 	/* CALL TO MINE <-----------------------------------------------------*/
 	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, mine_index, &coinBonus);
-	
+
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 
 	/*	Assert that choice1(an index) is a different card, otherwise print that it
 		is the same. */
-	if(backup.hand[currentPlayer][idxOfChoice1] == backup.hand[currentPlayer][idxOfChoice1])
+	if(backup.hand[currentPlayer][idxOfChoice1] == G.hand[currentPlayer][idxOfChoice1])
 	{
 		printf("Error Mine: choice1 is still the same but shouldn't be.\n\n");
 	}
@@ -114,8 +114,8 @@ int main()
 	{
 		if (G.playedCards[G.playedCardCount - 1] == copper)
 		{
-			printf("Error 'discardCard': should be discard .. but is playedCards array\n");
-			printf("Error Mine: choice1 found at top of discard, but should be at top of trashPile.\n\n");
+			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
+			printf("Error Mine: choice1 found in playedCards, but should be at top of trashPile.\n\n");
 		}
 	}
 
@@ -136,7 +136,7 @@ int main()
 		if ((G.playedCards[G.playedCardCount - 1] == copper) &&
 			(G.playedCards[G.playedCardCount - 2] == copper))
 		{
-			printf("Error 'discardCard': should be discard .. but is playedCards array\n");
+			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 			printf("Error Mine: choice1 found in playedCards NOT in trash.\n\n");
 		}
 	}
@@ -147,8 +147,8 @@ int main()
 	//if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])
 	if (backup.playedCardCount -1 != G.playedCardCount -1)
 	{
-		printf("Error 'discardCard': should be discardCount .. but is playedCardCount array\n");
-		printf("Error Mine: discardCount changed.\n\n");
+		//printf("Error 'discardCard': should be discardCount .. but is playedCardCount array\n");
+		printf("Error Mine: playedCardCount changed.\n\n");
 	}
 
 	/* The handCount should change.
@@ -164,39 +164,26 @@ int main()
 		'choice2 not found in hand after mine'. */
 	if (backup.supplyCount[moneyToGet] > 0)
 	{
-		int prevHandCount = backup.handCount[currentPlayer];
-		int was_in_hand = 0;
-		int now_in_hand = 0;
-
-		int idx;
-		for (idx = 0; idx < prevHandCount; idx++)
+		int found = 0;
+		int iter;
+		for (iter = 0; iter < G.handCount[currentPlayer]; iter++)
 		{
-			// was it in hand ??
-			if (backup.hand[currentPlayer][idx] == moneyToGet)
+			// is it in hand now ??
+			if (G.hand[currentPlayer][iter] == moneyToGet)
 			{
-				was_in_hand = 1;
+				found = 1;
+				break;
 			}
+
 		}
-		if (was_in_hand == 0)
+
+		if (found)
 		{
-			int iter;
-			for (iter = 0; iter < G.handCount[currentPlayer]; iter++)
-			{
-				// is it in hand now ??
-				if (G.hand[currentPlayer][iter] == moneyToGet)
-				{
-					now_in_hand == 1;
-				}
-
-			}
-
-			if (now_in_hand == 0)
-			{
-				printf("Error Mine: choice2 not found in hand after the call.\n\n");
-			}
+			printf("Error Mine: choice2 not found in hand after the call.\n\n");
 		}
 
 	}
+
 	/*	Compare the supplyCount[silver] before and after the call.If the
 		current count is not 1 less than previous, then print
 		'choice2 silver not 1 less than previous' */

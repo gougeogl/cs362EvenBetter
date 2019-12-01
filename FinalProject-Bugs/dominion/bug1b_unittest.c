@@ -37,7 +37,9 @@ int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("*** START Bug1-B Unit Test: Remodel Trash Failure ***\n");
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+	printf("Note* discardCard() broken. Where would test contents of discard..\n");
+	printf("      I am testing against contents of playedCards instead.\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** SETUP TEST SECTION ** */
@@ -94,16 +96,18 @@ int main()
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	
-	/* Assert that choice1(an index) is a different card, otherwise print that it
+	/* a) Assert that choice1(an index) is a different card, otherwise print that it
 	   is the same. */
 	if (backup.hand[currentPlayer][idxOfChoice1] == backup.hand[currentPlayer][idxOfChoice1])
 	{
 		printf("Error Remodel: choice1 is still the same but shouldn't be.\n\n");
 	}
 
-	/* Assert if top of previous discard was not the same as choice1, and
+	/* b) Assert if top of previous discard was not the same as choice1, and
 	   choice1 is found at the top of discard, print 'choice1 discarded
 	   not trashed'. */
+
+	/* b) IF DISCARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] != copper)
 	{
 		if (G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper)
@@ -111,10 +115,22 @@ int main()
 			printf("Error Remodel: choice1 found at top of discard, but should be at top of trashPile.\n\n");
 		}
 	}
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+	if (backup.playedCards[backup.playedCardCount - 1] != copper)
+	{
+		if (G.playedCards[G.playedCardCount - 1] == copper)
+		{
+			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
+			printf("Error Remodel: choice1 found in playedCards, but should be at top of trashPile.\n\n");
+		}
+	}
 
 	/* Assert if top of previous discard was the same as choice1, and the
 	   top 2 cards in discard are both choice1, print 'choice1 discarded
 	   not trashed'. */
+
+	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] == copper)
 	{
 		if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
@@ -123,18 +139,51 @@ int main()
 			printf("Error Remodel: choice1 discarded not trashed.\n\n");
 		}
 	}
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+	if (backup.playedCards[backup.playedCardCount - 1] == copper)
+	{
+		if ((G.playedCards[G.playedCardCount - 1] == copper) &&
+			(G.playedCards[G.playedCardCount - 2] == copper))
+		{
+			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
+			printf("Error Remodel: choice1 found in playedCards NOT in trash.\n\n");
+		}
+	}
 
 	/* Assert if backup.supplyCount[choice2] > 0 and choice2 was not in
-	   previous top of discard, and is not in current top of discard, print
-	   'choice2 not found in top of discard after remodel'. */
+   previous top of discard, and is not in current top of discard, print
+   'choice2 not found in top of discard after remodel'. */
+
+	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (backup.supplyCount[cardToGet] > 0)
 	{
 		if ((backup.discard[currentPlayer][backup.discardCount[currentPlayer] - 1] != cardToGet) &&
-			(G.discard[currentPlayer][G.discardCount[currentPlayer] -1] != cardToGet))
+			(G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] != cardToGet))
 		{
 			printf("Error Remodel. choice2 card to gain not found in top of discard after remodel.\n\n");
 		}
 	}
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+	if (backup.supplyCount[cardToGet] > 0)
+	{
+		if ((backup.playedCards[backup.playedCardCount - 1] != cardToGet) &&
+			(G.playedCards[G.playedCardCount - 1] != cardToGet))
+		{
+			printf("Error Remodel. choice2 card to gain not found in top of discard after remodel.\n");
+			printf("               *actually not in playedCards .. b/c that is where 'discardCard' places cards.\n\n");
+		}
+	}
+
+	/* The handCount should change.
+   Assert if backup.handCount[currentPlayer] == G.handCount[currentPlayer]
+   print 'Error Remodel: handCount didn't change.\n'	*/
+	if (backup.handCount[currentPlayer] == G.handCount[currentPlayer])
+	{
+		printf("Error Remodel: handCount didn't change.\n");
+	}
+
 	/* Compare the supplyCount[estate] before and after the call.If the
 	   current count is not 1 less than previous, then print
 	   'choice2 estate not 1 less than previous' */
@@ -146,6 +195,10 @@ int main()
 	printf("*** END Bug1-B Unit Test ***\n\n");
 	return 0;
 }
+
+/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+/* *** FUNCTION SPECIFICATIONS ***																	*/
+/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 
 /* This function adds memset initialization, and prints error if fail  */
 void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game)

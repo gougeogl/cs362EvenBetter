@@ -196,6 +196,10 @@ int main()
 	return 0;
 }
 
+/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+/* *** FUNCTION SPECIFICATIONS ***																	*/
+/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+
 /* This function adds memset initialization, and prints error if fail  */
 void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game)
 {

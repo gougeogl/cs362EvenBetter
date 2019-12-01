@@ -27,6 +27,7 @@ void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game
 // sets variable states and calls 'cardEffect' w/ 'tribute' as card
 void subTestTribute(
 	int testNo,
+	char* message,
 	struct gameState* oldState,
 	struct gameState* newState,
 	int newHandSize,
@@ -37,7 +38,7 @@ void subTestTribute(
 // must be called after subTestTribute
 void runAsserts(
 	struct gameState* before, 
-	struct gameState* after, 
+	struct gameState* after 
 );
 
 // HELPER PROTOS-TYPES
@@ -77,18 +78,21 @@ int main()
 	cardInDeck = gold;
 	subTestTribute(1, test_1_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
 	runAsserts(&backup,&G);
+	printf("------------------------------------------------------------------------------------\n");
 
 	// SUBTEST 2 -- 2 victory cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);
 	cardInDeck = estate;
 	subTestTribute(2, test_2_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
 	runAsserts(&backup, &G);
+	printf("------------------------------------------------------------------------------------\n");
 
 	// SUBTEST 3 -- 2 action cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);
 	cardInDeck = estate;
 	subTestTribute(3, test_3_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
 	runAsserts(&backup, &G);
+	printf("------------------------------------------------------------------------------------\n");
 
 	// SUBTEST 4 -- 2 curse cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);
@@ -198,7 +202,7 @@ void subTestTribute(
 	int idxOfChoice1 = 0; // choice1 tribute
 	int blank = -1;
 	int coinBonus = 0;
-	int currentPlayer = G.whoseTurn;
+	int currentPlayer = newState->whoseTurn;
 	int nextPlayer = currentPlayer + 1;
 
 	/* MMMMMMMMM SET UP CURRENT PLAYER *** MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/
@@ -240,7 +244,7 @@ void subTestTribute(
 	newState->deckCount[nextPlayer]++;
 
 	/* BACK UP STATE BEFORE CALL */
-	memset(oldState, '\0', sizeof(oldState));
+	memset(oldState, '\0', sizeof(*oldState));
 	oldState = newState;
 
 	/* CALL TO TRIBUTE <-----------------------------------------------------*/
@@ -425,10 +429,10 @@ void runAsserts(struct gameState* before, struct gameState* after)
 		and print the error.*/
 	if (after->handCount[currentPlayer] > before->handCount[currentPlayer])
 	{
-		if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] != estate ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] != estate &&
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] != gardens ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] != gardens{
+		if ((after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] != estate ||
+		     after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] != estate) &&
+		    (after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] != gardens ||
+			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] != gardens) ){
 
 				// Then your handCount increased withou having a Victory card
 				printf("Tribute Error: Your hand increased but..\n");

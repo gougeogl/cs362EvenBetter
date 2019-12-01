@@ -15,7 +15,7 @@ CC = gcc # compiler
 
 # FLAGS
 CFLAGS = -Wall # Warnings All 
-CFLAGS += -Wno-unused-value
+#CFLAGS += -Wno-unused-value
 CFLAGS += -fpic 
 CFLAGS += -pedantic
 CFLAGS += -coverage # used by gcov
@@ -54,7 +54,7 @@ bug1b_unittest: bug1b_unittest.c dominion.o rngs.o interface.o
 
 # ***********************************************************************************
 
-bug7unittest: bug1unittest.c dominion.o rngs.o interface.o
+bug7unittest: bug7unittest.c dominion.o rngs.o interface.o
 	${CC} ${CFLAGS} -g -o bug7unittest bug7unittest.c dominion.o rngs.o interface.o
 
 # ***********************************************************************************

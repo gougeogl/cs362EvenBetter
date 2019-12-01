@@ -53,9 +53,9 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 
 int main()
 {
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("*** START Bug7-B Unit Test: TributeRevealedCards Not Discarded ***\n");
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 
 	int kingdomCards[10] = { adventurer, ambassador, baron, curse, estate, tribute, minion, mine, gardens, remodel };
 

@@ -35,9 +35,9 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 
 int main()
 {
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("*** START Bug1-B Unit Test: Remodel Trash Failure ***\n");
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("Note* discardCard() broken. Where would test contents of discard..\n");
 	printf("      I am testing against contents of playedCards instead.\n\n");
 

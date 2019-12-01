@@ -7,8 +7,8 @@
 *
 * Assignement: Final Project Part B/
 *
-* Description:	Unit Test for Bug 7:
-*				TributeRevealedCards Buffer-OverRun
+* Description:	Unit Test for Bug 9:
+*				TributeRevealedCards Illegal Action Gain
 *
 **************************************************/
 #include <stdio.h>
@@ -54,8 +54,8 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("*** START Bug7 Unit Test: TributeRevealedCards Buffer-OverRun ***\n");
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+	printf("*** START Bug7 Unit Test: TributeRevealedCards Illegal Action Gain ***\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	int kingdomCards[10] = { adventurer, ambassador, baron, curse, estate, tribute, minion, mine, gardens, remodel };
 
@@ -70,8 +70,7 @@ int main()
 	int cardInDeck = -1;
 	char* test_1_message = "Place 2 treasures at top of next player's deck, then call tribute.";
 	char* test_2_message = "Place 2 Victory cards at top of next player's deck, then call tribute.";
-	char* test_3_message = "Place 2 Action cards at top of next player's deck, then call tribute.";
-	char* test_4_message = "Place 2 Curses at top of next player's deck, then call tribute.";
+	char* test_3_message = "Place 2 non-coin & non-victory (curses) at top of next player's deck, then call tribute.";
 
 	// SUBTEST 1 -- 2 treasure cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);
@@ -87,18 +86,12 @@ int main()
 	runAsserts(&backup, &G);
 	printf("------------------------------------------------------------------------------------\n");
 
-	// SUBTEST 3 -- 2 action cards
+	// SUBTEST 3 -- 2 non-coin, non-victory cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);
-	cardInDeck = estate;
+	cardInDeck = curse;
 	subTestTribute(3, test_3_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
 	runAsserts(&backup, &G);
 	printf("------------------------------------------------------------------------------------\n");
-
-	// SUBTEST 4 -- 2 curse cards
-	initTestGame(numPlayers, kingdomCards, seed, &G);
-	cardInDeck = curse;
-	subTestTribute(4, test_4_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
-	runAsserts(&backup, &G);
 
 	return 0;
 }

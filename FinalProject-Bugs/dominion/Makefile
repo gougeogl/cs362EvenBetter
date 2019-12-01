@@ -54,22 +54,50 @@ bug1b_unittest: bug1b_unittest.c dominion.o rngs.o interface.o
 
 # ***********************************************************************************
 
+bug2unittest: bug2unittest.c dominion.o rngs.o interface.o
+	${CC} ${CFLAGS} -g -o bug2unittest bug2unittest.c dominion.o rngs.o interface.o
+
+# ***********************************************************************************
+
+bug3unittest: bug3unittest.c dominion.o rngs.o interface.o
+	${CC} ${CFLAGS} -g -o bug3unittest bug3unittest.c dominion.o rngs.o interface.o
+
+# ***********************************************************************************
+
+bug4unittest: bug4unittest.c dominion.o rngs.o interface.o
+	${CC} ${CFLAGS} -g -o bug4unittest bug4unittest.c dominion.o rngs.o interface.o
+
+# ***********************************************************************************
+
 bug7unittest: bug7unittest.c dominion.o rngs.o interface.o
 	${CC} ${CFLAGS} -g -o bug7unittest bug7unittest.c dominion.o rngs.o interface.o
+
+# ***********************************************************************************
+
+bug7b_unittest: bug7b_unittest.c dominion.o rngs.o interface.o
+	${CC} ${CFLAGS} -g -o bug7b_unittest bug7b_unittest.c dominion.o rngs.o interface.o
 
 # ***********************************************************************************
 unittestresults: bug1unittest bug1b_unittest
 	./bug1unittest &> unittestresults.out
 	./bug1b_unittest >> unittestresults.out
+	./bug2unittest >> unittestresults.out
+	./bug3unittest >> unittestresults.out
+	./bug4unittest >> unittestresults.out
 	./bug7unittest >> unittestresults.out
+	./bug7b_unittest >> unittestresults.out
 	${COV} ${COV_FLAGS} dominion.c >> unittestresults.out
-	${COV} ${COV_FLAGS} bug1unittest.c >> unittestresults.out
+	${COV} ${COV_FLAGS} bug1unittest.c >> unittestresults.out	
 	${COV} ${COV_FLAGS} bug1b_unittest.c >> unittestresults.out
+	${COV} ${COV_FLAGS} bug2unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug7unittest.c >> unittestresults.out
+	${COV} ${COV_FLAGS} bug7b_unittest.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out
 	cat bug1unittest.c.gcov >> unittestresults.out
 	cat bug1b_unittest.c.gcov >> unittestresults.out
+	cat bug2unittest.c.gcov >> unittestresults.out
 	cat bug7unittest.c.gcov >> unittestresults.out
+	cat bug7b_unittest.c.gcov >> unittestresults.out
 
 # ***********************************************************************************
 
@@ -86,4 +114,5 @@ all: playdom player
 clean:
 	rm -f *.o playdom player *.gcov *.gcda *.gcno *.so *.out *.exe
 	rm -f playdom player testDrawCard 
-	rm -f bug1unittest bug1b_unittest bug7unittest
+	rm -f bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unittest
+	rm -f bug7unittest bug7b_unittest

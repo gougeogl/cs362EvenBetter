@@ -102,9 +102,14 @@ int main()
 	memset(&backup, '\0', sizeof(backup));
 	backup = G;
 
+	printDeck(nextPlayer, &G);
+	printDiscard(nextPlayer, &G);
+
 	/* CALL TO TRIBUTE <-----------------------------------------------------*/
 	cardEffect(tribute, idxOfChoice1, blank, blank, &G, tribute_index, &coinBonus);
 
+	printDeck(nextPlayer, &G);
+	printDiscard(nextPlayer, &G);
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -137,26 +142,16 @@ int main()
 		if (backup.deck[nextPlayer][backup.deckCount[nextPlayer] - 2] != G.discard[nextPlayer][G.discardCount[nextPlayer] - 2])
 		{
 			memset(name, '\0', sizeof name);
-			cardNumToName(G.playedCards[G.playedCards[G.playedCardCount - 1], name);
-
-			memset(nombre, '\0', sizeof nombre);
-			cardNumToName(G.playedCards[G.playedCards[G.playedCardCount - 2], nombre);
-
-			printf("Tribute Error: previous top 2 deck cards next player..\n");
-			printf("               not found in next player's discard.\n");
-			printf("               Found Location: playedCards\n");
-			printf("               G.playedCards[%d]: %s\n", G.playedCardCount - 1, name);
-			printf("               G.playedCards[%d]: %s\n\n", G.playedCardCount - 2, nombre);
-
-			memset(name, '\0', sizeof name);
 			cardNumToName(G.discard[nextPlayer][G.discardCount[nextPlayer] - 1], name);
 
 			memset(nombre, '\0', sizeof nombre);
 			cardNumToName(G.discard[nextPlayer][G.discardCount[nextPlayer] - 1], nombre);
 
-			printf("                Discard top 2:")
-			printf("                G.discard[%d]: %s\n", G.discardCount[nextPlayer] - 1, name);
-			printf("                G.discard[%d]: %s\n\n", G.discardCount[nextPlayer] - 2, nombre);
+			printf("Tribute Error: previous top 2 deck cards next player..\n");
+			printf("               not found in next player's discard.\n\n");
+			printf("               Discard top 2:\n");
+			printf("               G.discard[%d]: %s\n", G.discardCount[nextPlayer] - 1, name);
+			printf("               G.discard[%d]: %s\n\n", G.discardCount[nextPlayer] - 2, nombre);
 		}
 	}
 

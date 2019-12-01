@@ -86,4 +86,4 @@ all: playdom player
 clean:
 	rm -f *.o playdom player *.gcov *.gcda *.gcno *.so *.out *.exe
 	rm -f playdom player testDrawCard 
-	rm -f bug1unittest bug1b_unittest
+	rm -f bug1unittest bug1b_unittest bug7unittest

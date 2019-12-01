@@ -26,7 +26,7 @@ void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game
 
 // HELPER PROTOS-TYPES
 void emptyDeck(int player, struct gameState* state);
-void emptyPlayedCards(int player, struct gameState* state);
+void emptyPlayedCards(struct gameState* state);
 void emptyDiscard(int player, struct gameState* state);
 
 // HAND RELATED PROTO-TYPES
@@ -67,7 +67,7 @@ int main()
 
 	// empty every deck currentPlayer has
 	emptyDeck(currentPlayer, &G);
-	emptyPlayedCards(currentPlayer, &G); // req'd. b/c 'discardCard' is broken !!
+	emptyPlayedCards(&G); // req'd. b/c 'discardCard' is broken !!
 	emptyDiscard(currentPlayer, &G);
 	emptyHand(currentPlayer, &G);
 
@@ -91,15 +91,9 @@ int main()
 	memset(&backup, '\0', sizeof(backup));
 	backup = G;
 
-	printSupply(&G);
-	printHand(currentPlayer, &G);
-	printDiscard(currentPlayer, &G);
 	/* CALL TO MINE <-----------------------------------------------------*/
 	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, mine_index, &coinBonus);
 	
-	printSupply(&G);
-	printHand(currentPlayer, &G);
-	printDiscard(currentPlayer, &G);
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -115,7 +109,7 @@ int main()
 		'discardCount changed but shouldn't have'. */
 
 	//if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])
-	if (backup.playedCardCount[currentPlayer] != G.playedCardCount[currentPlayer])
+	if (backup.playedCards[backup.playedCardCount -1] != G.playedCards[G.playedCardCount -1])
 	{
 		printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 		printf("Error Mine: discardCount changed but shouldn't have.\n\n");
@@ -126,9 +120,9 @@ int main()
 		not trashed'. */
 
 	//if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] - 1] != copper)
-	if (backup.playedCards[currentPlayer][backup.playedCardCount[currentPlayer] -1] != copper)
+	if (backup.playedCards[backup.playedCardCount -1] != copper)
 	{
-		if (G.playedCards[currentPlayer][G.playedCardCount[currentPlayer] - 1] == copper)
+		if (G.playedCards[G.playedCardCount - 1] == copper)
 		{
 			printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 			printf("Error Mine: choice1 found at top of discard, but should be at top of trashPile.\n\n");
@@ -147,10 +141,10 @@ int main()
 	//	}
 	//}
 
-	if (backup.playedCards[currentPlayer][backup.playedCardCount[currentPlayer] - 1] == copper)
+	if (backup.playedCards[backup.playedCardCount - 1] == copper)
 	{
-		if ((G.playedCards[currentPlayer][G.playedCardCount[currentPlayer] - 1] == copper) &&
-			(G.playedCards[currentPlayer][G.playedCardCount[currentPlayer] - 2] == copper))
+		if ((G.playedCards[G.playedCardCount - 1] == copper) &&
+			(G.playedCards[G.playedCardCount - 2] == copper))
 		{
 			printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 			printf("Error Mine: choice1 discarded not trashed.\n\n");
@@ -234,15 +228,15 @@ void emptyDeck(int player, struct gameState* state)
 }
 
 // set player to remove all cards from current player's deck   
-void emptyPlayedCards(int player, struct gameState* state)
+void emptyPlayedCards(struct gameState* state)
 {
 	int i = 0;
-	while (i < state->playedCardCount[player])
+	while (i < state->playedCardCount)
 	{
-		state->playedCards[player][i] = -1;
+		state->playedCards[i] = -1;
 		i++;
 	}
-	state->playedCardCount[player] = 0;
+	state->playedCardCount = 0;
 }
 
 // eliminate all cards from discard.   

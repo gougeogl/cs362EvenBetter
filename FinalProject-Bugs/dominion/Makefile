@@ -78,7 +78,8 @@ bug7b_unittest: bug7b_unittest.c dominion.o rngs.o interface.o
 	${CC} ${CFLAGS} -g -o bug7b_unittest bug7b_unittest.c dominion.o rngs.o interface.o
 
 # ***********************************************************************************
-unittestresults: bug1unittest bug1b_unittest
+unittestresults: bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unittest\
+	bug7unittest bug7b_unittest
 	./bug1unittest &> unittestresults.out
 	./bug1b_unittest >> unittestresults.out
 	./bug2unittest >> unittestresults.out

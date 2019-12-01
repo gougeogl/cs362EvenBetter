@@ -54,7 +54,7 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("*** START Bug7 Unit Test: TributeRevealedCards Buffer-OverRun ***\n");
+	printf("*** START Bug7-B Unit Test: TributeRevealedCards Not Discarded ***\n");
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	int kingdomCards[10] = { adventurer, ambassador, baron, curse, estate, tribute, minion, mine, gardens, remodel };
@@ -69,9 +69,6 @@ int main()
 	int tribute_index = 0; // handPos tribute .. not really used
 	int cardInDeck = -1;
 	char* test_1_message = "Place 2 treasures at top of next player's deck, then call tribute.";
-	char* test_2_message = "Place 2 Victory cards at top of next player's deck, then call tribute.";
-	char* test_3_message = "Place 2 Action cards at top of next player's deck, then call tribute.";
-	char* test_4_message = "Place 2 Curses at top of next player's deck, then call tribute.";
 
 	// SUBTEST 1 -- 2 treasure cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);

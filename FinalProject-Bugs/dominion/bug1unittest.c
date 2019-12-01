@@ -35,9 +35,9 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 
 int main()
 {
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("*** START Bug1 Unit Test ***\n");
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+	printf("*** START Bug1 Unit Test: Mine Money to Trash Only Discards ***\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** SETUP TEST SECTION ** */
@@ -51,8 +51,9 @@ int main()
 	int seed = 1;
 	int numPlayers = 2;
 	int currentPlayer = 0;
-	int newHandSize = 1;
-	int idxOfChoice1 = 0; // choice1 mine
+	int newHandSize = 2;
+	int mine_index = 0; // handPos remodel
+	int idxOfChoice1 = 1; // choice1 mine
 	int moneyToGet = silver; // choice2 mine
 	int blank = -1;
 	int coinBonus = 0;
@@ -69,6 +70,9 @@ int main()
 	// you will only have a copper in your hand
 	setNewHandCount(currentPlayer, &G, newHandSize);
 
+	// place mine card in hand
+	setAtHandPos(currentPlayer, &G, mine, mine_index);
+
 	// The only copper in the game is in currentPlayer's hand
 	G.supplyCount[copper] = 0;
 
@@ -84,7 +88,7 @@ int main()
 	backup = G;
 
 	/* CALL TO MINE <-----------------------------------------------------*/
-	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, blank, &coinBonus);
+	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, mine_index, &coinBonus);
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */

@@ -36,7 +36,7 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("*** START Bug1-B Unit Test *** .\n");
+	printf("*** START Bug1-B Unit Test: Remodel Trash Failure ***\n");
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -51,8 +51,9 @@ int main()
 	int seed = 1;
 	int numPlayers = 2;
 	int currentPlayer = 0;
-	int newHandSize = 1;
-	int idxOfChoice1 = 0; // choice1 remodel
+	int newHandSize = 2;
+	int remodel_index = 0; // handPos remodel
+	int idxOfChoice1 = 1; // choice1 remodel
 	int cardToGet = estate; // choice2 remodel
 	int blank = -1;
 	int coinBonus = 0;
@@ -69,6 +70,9 @@ int main()
 	// you will only have a copper in your hand
 	setNewHandCount(currentPlayer, &G, newHandSize);
 
+	// place remodel card in hand
+	setAtHandPos(currentPlayer, &G, remodel, remodel_index);
+
 	// The only copper in the game is in currentPlayer's hand
 	G.supplyCount[copper] = 0;
 
@@ -84,41 +88,17 @@ int main()
 	backup = G;
 
 	/* CALL TO REMODEL <-----------------------------------------------------*/
-	cardEffect(remodel, idxOfChoice1, cardToGet, blank, &G, blank, &coinBonus);
+	cardEffect(remodel, idxOfChoice1, cardToGet, blank, &G, remodelIndex, &coinBonus);
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	
-	/* Assert that the choice1 card is found at the top of the trashPile,
-	   otherwise print that it is missing. */
-	if (G.trashPile[G.trashCount - 1] != backup.hand[currentPlayer][idxOfChoice1])
-	{
-		char name[MAX_STRING_LENGTH];
-		memset(name, '\0', sizeof(name));
-		cardNumToName(backup.hand[currentPlayer][idxOfChoice1], name);
-
-		char nombre[MAX_STRING_LENGTH];
-		memset(nombre, '\0', sizeof(nombre));
-		cardNumToName(G.trashPile[G.trashCount - 1], nombre);
-
-		printf("Error Remodel: previous choice1 not found at top of discard pile.\n");
-		printf("BEFORE: choice1 at hand[%d]: %s\n", idxOfChoice1, name);
-		printf("AFTER: trashPile[%d]: %s\n\n", G.trashCount - 1, nombre);
-	}
-
 	/* Assert that choice1(an index) is a different card, otherwise print that it
 	   is the same. */
 	if (backup.hand[currentPlayer][idxOfChoice1] == backup.hand[currentPlayer][idxOfChoice1])
 	{
 		printf("Error Remodel: choice1 is still the same but shouldn't be.\n\n");
-	}
-
-	/* Assert that the trashCount is 1 greater than the previous trashCount,
-	   otherwise print that "trashCount is not +1 previous." */
-	if (backup.trashCount + 1 != G.trashCount);
-	{
-		printf("Error Remodel: trashCount is still the same but shouldn't be.\n\n");
 	}
 
 	/* Assert if top of previous discard was not the same as choice1, and
@@ -135,7 +115,7 @@ int main()
 	/* Assert if top of previous discard was the same as choice1, and the
 	   top 2 cards in discard are both choice1, print 'choice1 discarded
 	   not trashed'. */
-	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer]] == copper)
+	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] == copper)
 	{
 		if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
 			(G.discard[currentPlayer][G.discardCount[currentPlayer] - 2] == copper))

@@ -88,7 +88,7 @@ int main()
 	backup = G;
 
 	/* CALL TO REMODEL <-----------------------------------------------------*/
-	cardEffect(remodel, idxOfChoice1, cardToGet, blank, &G, remodelIndex, &coinBonus);
+	cardEffect(remodel, idxOfChoice1, cardToGet, blank, &G, remodel_index, &coinBonus);
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */

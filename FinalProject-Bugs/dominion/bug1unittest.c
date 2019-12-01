@@ -87,9 +87,15 @@ int main()
 	memset(&backup, '\0', sizeof(backup));
 	backup = G;
 
+	printSupply(&G);
+	printHand(currentPlayer, &G);
+	printDiscard(currentPlayer, &G);
 	/* CALL TO MINE <-----------------------------------------------------*/
 	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, mine_index, &coinBonus);
-
+	
+	printSupply(&G);
+	printHand(currentPlayer, &G);
+	printDiscard(currentPlayer, &G);
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -103,15 +109,18 @@ int main()
 
 	/*	Assert that the discardCount has not changed, otherwise print
 		'discardCount changed but shouldn't have'. */
-	if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])
+
+	//if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])
+	if (backup.playedCardCount[currentPlayer] != G.playedCardCount[currentPlayer])
 	{
+		printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 		printf("Error Mine: discardCount changed but shouldn't have.\n\n");
 	}
 
 	/*	Assert if top of previous discard was not the same as choice1, and
 		choice1 is found at the top of discard, print 'choice1 discarded
 		not trashed'. */
-	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer]] != copper)
+	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] != copper)
 	{
 		if (G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper)
 		{
@@ -122,7 +131,7 @@ int main()
 	/*	Assert if top of previous discard was the same as choice1, and the
 		top 2 cards in discard are both choice1, print 'choice1 discarded
 		not trashed'. */
-	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer]] == copper)
+	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] == copper)
 	{
 		if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
 		    (G.discard[currentPlayer][G.discardCount[currentPlayer] - 2] == copper))
@@ -164,7 +173,7 @@ int main()
 
 			if (now_in_hand == 0)
 			{
-				printf("Error Mine: choice1 not found in hand after the call.\n\n");
+				printf("Error Mine: choice2 not found in hand after the call.\n\n");
 			}
 		}
 

@@ -26,6 +26,7 @@ void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game
 
 // HELPER PROTOS-TYPES
 void emptyDeck(int player, struct gameState* state);
+void emptyPlayedCards(int player, struct gameState* state);
 void emptyDiscard(int player, struct gameState* state);
 
 // HAND RELATED PROTO-TYPES
@@ -37,7 +38,9 @@ int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("*** START Bug1 Unit Test: Mine Money to Trash Only Discards ***\n");
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+	printf("Note* discardCard() broken. Where would test contents of discard..\n");
+	printf("      I am testing against contents of playedCards instead.\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** SETUP TEST SECTION ** */
@@ -64,6 +67,7 @@ int main()
 
 	// empty every deck currentPlayer has
 	emptyDeck(currentPlayer, &G);
+	emptyPlayedCards(currentPlayer, &G); // req'd. b/c 'discardCard' is broken !!
 	emptyDiscard(currentPlayer, &G);
 	emptyHand(currentPlayer, &G);
 
@@ -120,10 +124,13 @@ int main()
 	/*	Assert if top of previous discard was not the same as choice1, and
 		choice1 is found at the top of discard, print 'choice1 discarded
 		not trashed'. */
-	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] != copper)
+
+	//if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] - 1] != copper)
+	if (backup.playedCards[currentPlayer][backup.playedCardCount[currentPlayer] -1] != copper)
 	{
-		if (G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper)
+		if (G.playedCards[currentPlayer][G.playedCardCount[currentPlayer] - 1] == copper)
 		{
+			printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 			printf("Error Mine: choice1 found at top of discard, but should be at top of trashPile.\n\n");
 		}
 	}
@@ -131,11 +138,21 @@ int main()
 	/*	Assert if top of previous discard was the same as choice1, and the
 		top 2 cards in discard are both choice1, print 'choice1 discarded
 		not trashed'. */
-	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] == copper)
+	//if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] == copper)
+	//{
+	//	if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
+	//	    (G.discard[currentPlayer][G.discardCount[currentPlayer] - 2] == copper))
+	//	{
+	//		printf("Error Mine: choice1 discarded not trashed.\n\n");
+	//	}
+	//}
+
+	if (backup.playedCards[currentPlayer][backup.playedCardCount[currentPlayer] - 1] == copper)
 	{
-		if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
-		    (G.discard[currentPlayer][G.discardCount[currentPlayer] - 2] == copper))
+		if ((G.playedCards[currentPlayer][G.playedCardCount[currentPlayer] - 1] == copper) &&
+			(G.playedCards[currentPlayer][G.playedCardCount[currentPlayer] - 2] == copper))
 		{
+			printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 			printf("Error Mine: choice1 discarded not trashed.\n\n");
 		}
 	}
@@ -204,7 +221,7 @@ void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game
 
 }
 
-// set player to remove all estates from current player's deck  
+// set player to remove all cards from current player's deck  
 void emptyDeck(int player, struct gameState* state)
 {
 	int i = 0;
@@ -216,7 +233,19 @@ void emptyDeck(int player, struct gameState* state)
 	state->deckCount[player] = 0;
 }
 
-// eliminate all estates from discard.   
+// set player to remove all cards from current player's deck   
+void emptyPlayedCards(int player, struct gameState* state)
+{
+	int i = 0;
+	while (i < state->playedCardCount[player])
+	{
+		state->playedCards[player][i] = -1;
+		i++;
+	}
+	state->playedCardCount[player] = 0;
+}
+
+// eliminate all cards from discard.   
 void emptyDiscard(int player, struct gameState* state)
 {
 	int i = 0;

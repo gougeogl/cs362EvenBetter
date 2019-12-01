@@ -102,14 +102,9 @@ int main()
 	memset(&backup, '\0', sizeof(backup));
 	backup = G;
 
-	printDeck(nextPlayer, &G);
-	printDiscard(nextPlayer, &G);
-
 	/* CALL TO TRIBUTE <-----------------------------------------------------*/
 	cardEffect(tribute, idxOfChoice1, blank, blank, &G, tribute_index, &coinBonus);
 
-	printDeck(nextPlayer, &G);
-	printDiscard(nextPlayer, &G);
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** ASSERTS SECTION ** */
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -144,7 +139,7 @@ int main()
 		if (backup.discardCount[nextPlayer] + 2 != G.discardCount[nextPlayer])
 		{
 			printf("Tribute Error: next player's deckCount not -2 previous.\n");
-			printf("             : next player's discardCount not +2 previous.\n");
+			printf("             : next player's discardCount not +2 previous.\n\n");
 
 		}
 	}	  
@@ -173,21 +168,21 @@ int main()
 	{
 		if (backup.coins + 2 != G.coins)
 		{
-			printf("Tribute Error: You had 1 treasure in discard, but didn't gain 2 coin.\n");
+			printf("Tribute Error: You had 1 treasure in discard, but didn't gain 2 coin.\n\n");
 		}
 	}
 	else if (totalCoin == 4)
 	{
 		if (backup.coins + 4 != G.coins)
 		{
-			printf("Tribute Error: You had 2 treasures in discard, but didn't gain 4 coin.\n");
+			printf("Tribute Error: You had 2 treasures in discard, but didn't gain 4 coin.\n\n");
 		}
 	}
 	/*Assert that if the current player's coin went up by 2 from previous, that
 	the next player's top 2 discarded cards are a coin, otherwise print a message*/
 	else if (totalCoin == 0 && (backup.coins != G.coins))
 	{
-		printf("Tribute Error: You gained coin, but didn't find a treasure in discard.\n");
+		printf("Tribute Error: You gained coin, but didn't find a treasure in discard.\n\n");
 	}
 
 	/*Assert if one of the top 2 cards in the next player's discard
@@ -211,28 +206,27 @@ int main()
 	{
 		if (backup.handCount[nextPlayer] + 2 != G.handCount[nextPlayer])
 		{
-			printf("Tribute Error: You had 1 Victory card in discard, but didn't gain 2 card.\n");
+			printf("Tribute Error: You had 1 Victory card in discard, but didn't gain 2 card.\n\n");
 		}
 	}
 	else if (totalVictory == 4)
 	{
 		if (backup.handCount[nextPlayer] + 4 != G.handCount[nextPlayer])
 		{
-			printf("Tribute Error: You had 2 Victory card in discard, but didn't gain 4 cards.\n");
+			printf("Tribute Error: You had 2 Victory card in discard, but didn't gain 4 cards.\n\n");
 		}
 	}
 	/*Assert that if the current player's hand count went up by 2 from previous, that
 	the next player's top 2 discarded cards are a victory card.*/
 	else if (totalVictory == 0 && (backup.handCount[nextPlayer]!= G.handCount[nextPlayer]))
 	{
-		printf("Tribute Error: You gained cards in hand, but didn't find a Victory card in discard.\n");
+		printf("Tribute Error: You gained cards in hand, but didn't find a Victory card in discard.\n\n");
 	}
 
 	// This will catch the error.
 	/*Assert that if the current player's numActions went up by 2 from previous, that 
 	the next player's top 2 discarded cards are an action card, otherwise print a message*/
 
-	adventurer, ambassador, baron, estate, tribute, minion, mine, gardens, remodel, smithy
 	int totalActions = 0;
 	if (G.discard[nextPlayer][G.discardCount[nextPlayer] - 1] == adventurer ||
 		G.discard[nextPlayer][G.discardCount[nextPlayer] - 1] == baron ||
@@ -251,7 +245,7 @@ int main()
 			G.discard[nextPlayer][G.discardCount[nextPlayer] - 1] == minion ||
 			G.discard[nextPlayer][G.discardCount[nextPlayer] - 1] == mine ||
 			G.discard[nextPlayer][G.discardCount[nextPlayer] - 1] == remodel ||
-			G.discard[nextPlayer][G.discardCount[nextPlayer] - 1] == smithy) {
+			G.discard[nextPlayer][G.discardCount[nextPlayer] - 1] == smithy){
 
 			// 2nd actions found
 			totalActions += 4;
@@ -262,19 +256,19 @@ int main()
 	{
 		if (backup.numActions + 2 != G.numActions)
 		{
-			printf("Tribute Error: You had 1 action card in discard, but didn't gain 2 actions.\n");
+			printf("Tribute Error: You had 1 action card in discard, but didn't gain 2 actions.\n\n");
 		}
 	}
 	else if (totalActions == 4)
 	{
 		if (backup.numActions + 4 != G.numActions)
 		{
-			printf("Tribute Error: You had 2 action cards in discard, but didn't gain 4 actions.\n");
+			printf("Tribute Error: You had 2 action cards in discard, but didn't gain 4 actions.\n\n");
 		}
 	}
 	else if (totalActions == 0 && (backup.numActions != G.numActions))
 	{
-		printf("Tribute Error: You gained actions, but didn't find any action cards in discard.\n");
+		printf("Tribute Error: You gained actions, but didn't find any action cards in discard.\n\n");
 	}
 
 	/*Assert that if the current player's hand count went up by 2 from previous, that 

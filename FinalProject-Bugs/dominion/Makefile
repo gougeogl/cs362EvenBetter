@@ -110,49 +110,48 @@ bug11unittest: bug11unittest.c dominion.o rngs.o interface.o
 # ***********************************************************************************
 
 unittestresults: bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unittest\
-	bug5unittest bug6unittest bug7unittest bug7b_unittest bug8unittest bug9unittest\
-	bug10unittest bug11unittest
+	bug7unittest bug7b_unittest bug9unittest
 	./bug1unittest &> unittestresults.out
 	./bug1b_unittest >> unittestresults.out
 	./bug2unittest >> unittestresults.out
 	./bug3unittest >> unittestresults.out
 	./bug4unittest >> unittestresults.out
-	./bug5unittest >> unittestresults.out
-	./bug6unittest >> unittestresults.out
+	#./bug5unittest >> unittestresults.out
+	#./bug6unittest >> unittestresults.out
 	./bug7unittest >> unittestresults.out
 	./bug7b_unittest >> unittestresults.out
-	./bug8unittest >> unittestresults.out
+	#./bug8unittest >> unittestresults.out
 	./bug9unittest >> unittestresults.out
-	./bug10unittest >> unittestresults.out
-	./bug11unittest >> unittestresults.out
+	#./bug10unittest >> unittestresults.out
+	#./bug11unittest >> unittestresults.out
 	${COV} ${COV_FLAGS} dominion.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug1unittest.c >> unittestresults.out	
 	${COV} ${COV_FLAGS} bug1b_unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug2unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug3unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug4unittest.c >> unittestresults.out
-	${COV} ${COV_FLAGS} bug5unittest.c >> unittestresults.out
-	${COV} ${COV_FLAGS} bug6unittest.c >> unittestresults.out
+	#${COV} ${COV_FLAGS} bug5unittest.c >> unittestresults.out
+	#${COV} ${COV_FLAGS} bug6unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug7unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug7b_unittest.c >> unittestresults.out
-	${COV} ${COV_FLAGS} bug8unittest.c >> unittestresults.out
+	#${COV} ${COV_FLAGS} bug8unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug9unittest.c >> unittestresults.out
-	${COV} ${COV_FLAGS} bug10unittest.c >> unittestresults.out
-	${COV} ${COV_FLAGS} bug11unittest.c >> unittestresults.out
+	#${COV} ${COV_FLAGS} bug10unittest.c >> unittestresults.out
+	#${COV} ${COV_FLAGS} bug11unittest.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out
 	cat bug1unittest.c.gcov >> unittestresults.out
 	cat bug1b_unittest.c.gcov >> unittestresults.out
 	cat bug2unittest.c.gcov >> unittestresults.out
 	cat bug3unittest.c.gcov >> unittestresults.out
 	cat bug4unittest.c.gcov >> unittestresults.out
-	cat bug5unittest.c.gcov >> unittestresults.out
-	cat bug6unittest.c.gcov >> unittestresults.out
+	#cat bug5unittest.c.gcov >> unittestresults.out
+	#cat bug6unittest.c.gcov >> unittestresults.out
 	cat bug7unittest.c.gcov >> unittestresults.out
 	cat bug7b_unittest.c.gcov >> unittestresults.out
-	cat bug8unittest.c.gcov >> unittestresults.out
+	#cat bug8unittest.c.gcov >> unittestresults.out
 	cat bug9unittest.c.gcov >> unittestresults.out
-	cat bug10unittest.c.gcov >> unittestresults.out
-	cat bug11unittest.c.gcov >> unittestresults.out
+	#cat bug10unittest.c.gcov >> unittestresults.out
+	#cat bug11unittest.c.gcov >> unittestresults.out
 
 # ***********************************************************************************
 
@@ -170,4 +169,5 @@ clean:
 	rm -f *.o playdom player *.gcov *.gcda *.gcno *.so *.out *.exe
 	rm -f playdom player testDrawCard 
 	rm -f bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unittest
-	rm -f bug7unittest bug7b_unittest
+	rm -f bug5unittest bug6unittest bug7unittest bug7b_unittest bug8unittest
+	rm -f bug9unittest bug10unittest bug11unittest

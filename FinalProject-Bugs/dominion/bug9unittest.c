@@ -54,7 +54,7 @@ void setAtHandPos(int player, struct gameState* state, int card, int handPos);
 int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("*** START Bug7 Unit Test: TributeRevealedCards Illegal Action Gain ***\n");
+	printf("*** START Bug9 Unit Test: TributeRevealedCards Illegal Action Gain ***\n");
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	int kingdomCards[10] = { adventurer, ambassador, baron, curse, estate, tribute, minion, mine, gardens, remodel };
@@ -212,6 +212,9 @@ void subTestTribute(
 	// place tribute card in hand
 	setAtHandPos(currentPlayer, newState, tribute, tribute_index);
 
+	// set coins appropriately
+	updateCoins(currentPlayer, newState, coinBonus);
+
 	/* MMMMMMMMM SET UP NEXT PLAYER *** MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/
 
 	// empty every deck currentPlayer has
@@ -219,7 +222,7 @@ void subTestTribute(
 	emptyPlayedCards(newState); // req'd. b/c 'discardCard' is broken !!
 	emptyDiscard(nextPlayer, newState);
 	emptyHand(nextPlayer, newState);
-
+	
 	// subtest 1 = ensure only 2 golds are in next player's hand
 	// subtest 2 = ensure only 2 victory cards are in next player's hand
 	// subtest 3 = ensure only 2 action cards are in next player's hand

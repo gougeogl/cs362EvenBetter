@@ -196,6 +196,9 @@ void subTestTribute7B(
 	// place tribute card in hand
 	setAtHandPos(currentPlayer, newState, tribute, tribute_index);
 
+	// update coins appropriately
+	updateCoins(currentPlayer, newState, coinBonus);
+
 	/* MMMMMMMMM SET UP NEXT PLAYER *** MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/
 
 	// empty every deck currentPlayer has

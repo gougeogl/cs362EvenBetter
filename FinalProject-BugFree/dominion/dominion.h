@@ -71,6 +71,8 @@ struct gameState {
     int discardCount[MAX_PLAYERS];
     int playedCards[MAX_DECK];
     int playedCardCount;
+	int trashCount;
+	int trashPile[MAX_DECK];
 };
 
 /* All functions return -1 on failure, and DO NOT CHANGE GAME STATE;

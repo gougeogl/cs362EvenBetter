@@ -136,21 +136,19 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
     ////////////////////////
     //supply intilization complete
 
-    //set player decks
-    for (i = 0; i < numPlayers; i++)
-    {
-        state->deckCount[i] = 0;
-        for (j = 0; j < 3; j++)
-        {
-            state->deck[i][j] = estate;
-            state->deckCount[i]++;
-        }
-        for (j = 3; j < 10; j++)
-        {
-            state->deck[i][j] = copper;
-            state->deckCount[i]++;
-        }
-    }
+	//set player decks
+	for (i = 0; i < numPlayers; i++)
+	{
+		state->deckCount[i] = 0;
+		for (j = 0; j < 3; j++)
+		{
+			gainCard(estate, state, 1, i);
+		}
+		for (j = 3; j < 10; j++)
+		{
+			gainCard(copper, state, 1, i); // supplyPos, gameState, to Deck, player is 'i'
+		}
+	}
 
     //shuffle player decks
     for (i = 0; i < numPlayers; i++)
@@ -161,18 +159,18 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
         }
     }
 
-    //draw player hands
-    for (i = 0; i < numPlayers; i++)
-    {
-        //initialize hand size to zero
-        state->handCount[i] = 0;
-        state->discardCount[i] = 0;
-        //draw 5 cards
-        // for (j = 0; j < 5; j++)
-        //	{
-        //	  drawCard(i, state);
-        //	}
-    }
+	//draw player hands
+	for (i = 0; i < numPlayers; i++)
+	{
+		//initialize hand size to zero
+		state->handCount[i] = 0;
+		state->discardCount[i] = 0;
+		//draw 5 cards
+		for (j = 0; j < 5; j++)
+		{
+			drawCard(i, state);
+		}
+	}
 
     //set embargo tokens to 0 for all supply piles
     for (i = 0; i <= treasure_map; i++)
@@ -187,13 +185,10 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
     state->numBuys = 1;
     state->playedCardCount = 0;
     state->whoseTurn = 0;
-    state->handCount[state->whoseTurn] = 0;
-    //int it; move to top
 
-    //Moved draw cards to here, only drawing at the start of a turn
-    for (it = 0; it < 5; it++) {
-        drawCard(state->whoseTurn, state);
-    }
+	//initialize trash mat
+	state->trashCount = 0;
+	state->trashPile[state->trashCount] = -1;
 
     updateCoins(state->whoseTurn, state, 0);
 

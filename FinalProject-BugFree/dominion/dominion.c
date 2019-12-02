@@ -1072,10 +1072,30 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 drawCard(currentPlayer, state);
                 drawCard(currentPlayer, state);
             }
-            else { //Action Card
+            else if (tributeRevealedCards[i] != copper && 
+					 tributeRevealedCards[i] != silver && 
+					 tributeRevealedCards[i] != gold  &&
+					 tributeRevealedCards[i] != estate && 
+					 tributeRevealedCards[i] != duchy &&
+					 tributeRevealedCards[i] != province &&
+					 tributeRevealedCards[i] != gardens &&
+					 tributeRevealedCards[i] != great_hall &&
+					 tributeRevealedCards[i] != curse){
+
                 state->numActions = state->numActions + 2;
             }
         }
+
+		if (tributeRevealedCards[0] != -1)
+		{
+			state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[0];
+			state->discardCount[nextPlayer]++;
+		}
+		if (tributeRevealedCards[1] != -1)
+		{
+			state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[1];
+			state->discardCount[nextPlayer]++;
+		}
 
         return 0;
 

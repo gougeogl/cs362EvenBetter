@@ -89,7 +89,7 @@ int main()
 
 	// SUBTEST 3 -- 2 action cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);
-	cardInDeck = estate;
+	cardInDeck = adventurer;
 	subTestTribute(3, test_3_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
 	runAsserts(&backup, &G);
 	printf("------------------------------------------------------------------------------------\n");
@@ -250,13 +250,19 @@ void subTestTribute(
 	memset(oldState, '\0', sizeof(*oldState));
 	oldState = newState;
 
+	printf("handCount[currentPlayer %d]: %d\n", currentPlayer, oldState->handCount[currentPlayer]);
 	printHand(currentPlayer, newState);
+	printDeck(nextPlayer, newState);
 	printDiscard(nextPlayer, newState);
+	printf("TRACE: oldState->numActions %d\n", oldState->numActions);
 	/* CALL TO TRIBUTE <-----------------------------------------------------*/
 	cardEffect(tribute, idxOfChoice1, blank, blank, newState, tribute_index, &coinBonus);
 
+	printf("handCount[currentPlayer %d]: %d\n", currentPlayer, newState->handCount[currentPlayer]);
 	printHand(currentPlayer, newState);
+	printDeck(nextPlayer, newState);
 	printDiscard(nextPlayer, newState);
+	printf("TRACE: newState->numActions %d\n", newState->numActions);
 }
 
 /* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -392,8 +398,14 @@ void runAsserts(struct gameState* before, struct gameState* after)
 		after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] == mine ||
 		after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] == remodel) {
 
+		printf("TRACE: bug7unittest.c\n");
+		printf("after->discard[nextPlayer %d][after->discardCount[nextPlayer] -1 %d]: %d\n", 
+				nextPlayer, after->discardCount[nextPlayer] -1, after->discard[nextPlayer][after->discardCount[nextPlayer] -1]);
 		// 1 action found
-		totalActions += 2;
+		if(after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] != after->discard[nextPlayer][after->discardCount[nextPlayer] - 2]) 
+		{
+			totalActions += 2;
+		}
 	}
 	if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == adventurer ||
 	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == baron ||
@@ -402,14 +414,21 @@ void runAsserts(struct gameState* before, struct gameState* after)
 	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == mine ||
 	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == remodel) {
 
+
+		printf("after->discard[nextPlayer %d][after->discardCount[nextPlayer] -2 %d]: %d\n", 
+				nextPlayer, after->discardCount[nextPlayer] -2, after->discard[nextPlayer][after->discardCount[nextPlayer] -2]);
 		// 2nd actions found
-		totalActions += 4;
+		if(after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] != after->discard[nextPlayer][after->discardCount[nextPlayer] - 2]) 
+		{
+			totalActions += 4;
+		}
 	}
 
 	if (totalActions == 2)
 	{
 		if (before->numActions + 2 != after->numActions)
 		{
+			printf("TRACE: totalActions %d\n", totalActions);
 			printf("Tribute Error: You had 1 action card in discard, but didn't gain 2 actions.\n\n");
 		}
 	}
@@ -417,11 +436,14 @@ void runAsserts(struct gameState* before, struct gameState* after)
 	{
 		if (before->numActions + 4 != after->numActions)
 		{
+			printf("TRACE: totalActions %d\n", totalActions);
 			printf("Tribute Error: You had 2 action cards in discard, but didn't gain 4 actions.\n\n");
 		}
 	}
 	else if (totalActions == 0 && (before->numActions != after->numActions))
 	{
+		printf("TRACE: totalActions %d\n", totalActions);
+		printf("TRACE: before->numActions %d, after->numActions %d\n", before->numActions, after->numActions);
 		printf("Tribute Error: You gained actions, but didn't find any action cards in discard.\n\n");
 	}
 

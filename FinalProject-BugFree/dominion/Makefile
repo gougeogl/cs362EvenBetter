@@ -138,7 +138,7 @@ unittestresults: bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unitt
 	cat bug4unittest.c.gcov >> unittestresults.out
 	#cat bug5unittest.c.gcov >> unittestresults.out
 	#cat bug6unittest.c.gcov >> unittestresults.out
-	cat bug7unittest.c.gcov >> unittestresults.out	cat bug7b_unittest.c.gcov >> unittestresults.out
+	cat bug7unittest.c.gcov >> unittestresults.out	
 	#cat bug8unittest.c.gcov >> unittestresults.out
 	cat bug9unittest.c.gcov >> unittestresults.out
 	cat bug10unittest.c.gcov >> unittestresults.out

@@ -90,7 +90,7 @@ int main()
 	/* BACK UP STATE BEFORE CALL */
 	memset(&backup, '\0', sizeof(backup));
 	backup = G;
-	
+
 	/* CALL TO MINE <-----------------------------------------------------*/
 	cardEffect(mine, idxOfChoice1, moneyToGet, blank, &G, mine_index, &coinBonus);
 
@@ -177,7 +177,7 @@ int main()
 
 		}
 
-		if (found)
+		if (!found)
 		{
 			printf("Error Mine: choice2 not found in hand after the call.\n\n");
 		}

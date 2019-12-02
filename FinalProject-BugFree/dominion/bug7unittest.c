@@ -250,9 +250,13 @@ void subTestTribute(
 	memset(oldState, '\0', sizeof(*oldState));
 	oldState = newState;
 
+	printHand(currentPlayer, newState);
+	printDiscard(nextPlayer, newState);
 	/* CALL TO TRIBUTE <-----------------------------------------------------*/
 	cardEffect(tribute, idxOfChoice1, blank, blank, newState, tribute_index, &coinBonus);
 
+	printHand(currentPlayer, newState);
+	printDiscard(nextPlayer, newState);
 }
 
 /* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
@@ -309,14 +313,13 @@ void runAsserts(struct gameState* before, struct gameState* after)
 
 		// 1 treasure found
 		totalCoin += 2;
+	}
+	if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == copper ||
+		after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == silver ||
+		after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == gold) {
 
-		if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == copper ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == silver ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == gold) {
-
-			// 2nd treasure found
-			totalCoin += 2;
-		}
+		// 2nd treasure found
+		totalCoin += 2;
 	}
 
 	if (totalCoin == 2)
@@ -348,13 +351,12 @@ void runAsserts(struct gameState* before, struct gameState* after)
 
 		// 1 treasure found
 		totalVictory += 2;
+	}
+	if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == estate ||
+		after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == gardens) {
 
-		if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == estate ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == gardens) {
-
-			// 2nd treasure found
-			totalVictory += 2;
-		}
+		// 2nd treasure found
+		totalVictory += 2;
 	}
 
 	if (totalVictory == 2)
@@ -392,17 +394,16 @@ void runAsserts(struct gameState* before, struct gameState* after)
 
 		// 1 action found
 		totalActions += 2;
+	}
+	if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == adventurer ||
+	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == baron ||
+	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == tribute ||
+	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == minion ||
+	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == mine ||
+	    after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == remodel) {
 
-		if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == adventurer ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == baron ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == tribute ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == minion ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == mine ||
-			after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == remodel) {
-
-			// 2nd actions found
-			totalActions += 4;
-		}
+		// 2nd actions found
+		totalActions += 4;
 	}
 
 	if (totalActions == 2)

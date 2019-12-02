@@ -1068,34 +1068,46 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 state->coins += 2;
             }
 
-            else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) { //Victory Card Found
-                drawCard(currentPlayer, state);
-                drawCard(currentPlayer, state);
-            }
-            else if (tributeRevealedCards[i] != copper && 
-					 tributeRevealedCards[i] != silver && 
-					 tributeRevealedCards[i] != gold  &&
-					 tributeRevealedCards[i] != estate && 
-					 tributeRevealedCards[i] != duchy &&
-					 tributeRevealedCards[i] != province &&
-					 tributeRevealedCards[i] != gardens &&
-					 tributeRevealedCards[i] != great_hall &&
-					 tributeRevealedCards[i] != curse){
+            else if (tributeRevealedCards[i] == estate || 
+		     tributeRevealedCards[i] == duchy || 
+                     tributeRevealedCards[i] == province || 
+                     tributeRevealedCards[i] == gardens || 
+                     tributeRevealedCards[i] == great_hall) { //Victory Card Found
 
-                state->numActions = state->numActions + 2;
+                	drawCard(currentPlayer, state);
+                	drawCard(currentPlayer, state);
+            }
+            else if (tributeRevealedCards[i] == adventurer || 
+		     tributeRevealedCards[i] == council_room || 
+		     tributeRevealedCards[i] == mine || 
+		     tributeRevealedCards[i] == remodel || 
+		     tributeRevealedCards[i] == smithy|| 
+		     tributeRevealedCards[i] == village || 
+		     tributeRevealedCards[i] == baron ||
+		     tributeRevealedCards[i] == great_hall || 
+		     tributeRevealedCards[i] == steward ||
+		     tributeRevealedCards[i] == tribute || 
+		     tributeRevealedCards[i] == ambassador || 
+		     tributeRevealedCards[i] == cutpurse || 
+		     tributeRevealedCards[i] == outpost || 
+		     tributeRevealedCards[i] == salvager || 
+		     tributeRevealedCards[i] == sea_hag || 
+		     tributeRevealedCards[i] == treasure_map ){ 
+
+                	state->numActions = state->numActions + 2;
             }
         }
 
-		if (tributeRevealedCards[0] != -1)
-		{
-			state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[0];
-			state->discardCount[nextPlayer]++;
-		}
-		if (tributeRevealedCards[1] != -1)
-		{
-			state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[1];
-			state->discardCount[nextPlayer]++;
-		}
+	if (tributeRevealedCards[0] != -1)
+	{
+		state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[0];
+		state->discardCount[nextPlayer]++;
+	}
+	if (tributeRevealedCards[1] != -1)
+	{
+		state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[1];
+		state->discardCount[nextPlayer]++;
+	}
 
         return 0;
 

@@ -107,7 +107,7 @@ int main()
 	   choice1 is found at the top of discard, print 'choice1 discarded
 	   not trashed'. */
 
-	/* b) IF DISCARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// b) IF DISCARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] != copper)
 	{
 		if (G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper)
@@ -115,7 +115,7 @@ int main()
 			printf("Error Remodel: choice1 found at top of discard, but should be at top of trashPile.\n\n");
 		}
 	}
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	if (backup.playedCards[backup.playedCardCount - 1] != copper)
 	{
@@ -124,13 +124,13 @@ int main()
 			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 			printf("Error Remodel: choice1 found in playedCards, but should be at top of trashPile.\n\n");
 		}
-	}
+	} */
 
 	/* Assert if top of previous discard was the same as choice1, and the
 	   top 2 cards in discard are both choice1, print 'choice1 discarded
 	   not trashed'. */
 
-	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] == copper)
 	{
 		if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
@@ -139,7 +139,7 @@ int main()
 			printf("Error Remodel: choice1 discarded not trashed.\n\n");
 		}
 	}
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	if (backup.playedCards[backup.playedCardCount - 1] == copper)
 	{
@@ -149,13 +149,13 @@ int main()
 			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
 			printf("Error Remodel: choice1 found in playedCards NOT in trash.\n\n");
 		}
-	}
+	}*/
 
 	/* Assert if backup.supplyCount[choice2] > 0 and choice2 was not in
    previous top of discard, and is not in current top of discard, print
    'choice2 not found in top of discard after remodel'. */
 
-	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	if (backup.supplyCount[cardToGet] > 0)
 	{
 		if ((backup.discard[currentPlayer][backup.discardCount[currentPlayer] - 1] != cardToGet) &&
@@ -164,7 +164,7 @@ int main()
 			printf("Error Remodel. choice2 card to gain not found in top of discard after remodel.\n\n");
 		}
 	}
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	if (backup.supplyCount[cardToGet] > 0)
 	{
@@ -174,7 +174,7 @@ int main()
 			printf("Error Remodel. choice2 card to gain not found in top of discard after remodel.\n");
 			printf("               *actually not in playedCards .. b/c that is where 'discardCard' places cards.\n\n");
 		}
-	}
+	}*/
 
 	/* The handCount should change.
    Assert if backup.handCount[currentPlayer] == G.handCount[currentPlayer]

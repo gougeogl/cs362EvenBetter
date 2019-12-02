@@ -760,6 +760,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
         //Update Coins for Buy
         updateCoins(currentPlayer, state, 5);
+
         x = 1;//Condition to loop on
         while( x == 1) {//Buy one card
             if (supplyCount(choice1, state) <= 0) {
@@ -771,11 +772,13 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 }
             }
             else if (state->coins < getCost(choice1)) {
+
                 printf("That card is too expensive!\n");
 
                 if (DEBUG) {
                     printf("Coins: %d < %d\n", state->coins, getCost(choice1));
                 }
+
             }
             else {
 
@@ -1341,7 +1344,6 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
 int updateCoins(int player, struct gameState *state, int bonus)
 {
     int i;
-
     //reset coin count
     state->coins = 0;
 
@@ -1370,4 +1372,3 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 
 //end of dominion.c
-

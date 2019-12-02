@@ -38,9 +38,7 @@ int main()
 {
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("*** START Bug1 Unit Test: Mine Money to Trash Only Discards ***\n");
-	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("Note* discardCard() broken. Where would test contents of discard..\n");
-	printf("      I am testing against contents of playedCards instead.\n\n");
+	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** SETUP TEST SECTION ** */
@@ -112,7 +110,7 @@ int main()
 	//if (backup.playedCards[backup.playedCardCount - 1] != copper)
 	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] - 1] != copper)
 	{
-		if (G.discard[G.discardCount[currentPlayer] - 1] == copper)
+		if (G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper)
 		{
 			printf("Error Mine: choice1 found in discard, but should be at top of trashPile.\n\n");
 		}
@@ -144,10 +142,12 @@ int main()
 		'discardCount changed but shouldn't have'. */
 
 	//if (backup.playedCardCount - 1 != G.playedCardCount - 1)
+	/*
 	if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])
 	{
 		printf("Error Mine: discardCount changed.\n\n");
 	}
+	*/
 
 	/* The handCount should change.
 	   Assert if backup.handCount[currentPlayer] == G.handCount[currentPlayer]

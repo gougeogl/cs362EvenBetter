@@ -822,12 +822,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         //discard card from hand
         discardCard(handPos, currentPlayer, state, 0);
 
-        //discard trashed card
+        //find card to trash in hand equal to j 
         for (i = 0; i < state->handCount[currentPlayer]; i++)
         {
             if (state->hand[currentPlayer][i] == j)
             {
-                discardCard(i, currentPlayer, state, 0);
+                discardCard(i, currentPlayer, state, 1);
                 break;
             }
         }
@@ -842,7 +842,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             return -1;
         }
 
-        gainCard(choice2, state, 0, currentPlayer);
+        //gainCard(choice2, state, 0, currentPlayer);
 
         //discard card from hand
         discardCard(handPos, currentPlayer, state, 0);
@@ -852,11 +852,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         {
             if (state->hand[currentPlayer][i] == j)
             {
-                discardCard(i, currentPlayer, state, 0);
+                discardCard(i, currentPlayer, state, 1);
                 break;
             }
         }
 
+	gainCard(choice2, state, 0, currentPlayer);
 
         return 0;
 
@@ -1062,7 +1063,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             tributeRevealedCards[1] = -1;
         }
 
-        for (i = 0; i <= 2; i ++) {
+        for (i = 0; i < 2; i ++) {
             if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
                 state->coins += 2;
             }

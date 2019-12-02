@@ -38,8 +38,6 @@ int main()
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
 	printf("*** START Bug1-B Unit Test: Remodel Trash Failure ***\n");
 	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
-	printf("Note* discardCard() broken. Where would test contents of discard..\n");
-	printf("      I am testing against contents of playedCards instead.\n\n");
 
 	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
 	/* ** SETUP TEST SECTION ** */

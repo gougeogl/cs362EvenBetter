@@ -1111,36 +1111,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 		     tributeRevealedCards[i] == salvager ||
 		     tributeRevealedCards[i] == sea_hag ||
 		     tributeRevealedCards[i] == treasure_map ){
-			//printf("BEFORE state->numActions = state->numActions + 2, numActions = %d\n", state->numActions);
+
                 	state->numActions = state->numActions + 2;
-			//printf("AFTER state->numActions = state->numActions + 2, numActions = %d\n", state->numActions);
             }
         }
-	/*
-	printf("TRACE: 'tribute'\n");
-	printf("     : at end of function..\n");
-	printf("     : tributeRevealedCards[0]: %d\n", tributeRevealedCards[0]);
-	printf("     : tributeRevealedCards[1]: %d\n", tributeRevealedCards[1]);
-	*/
-	//if (tributeRevealedCards[0] != -1)
-	//{
-		//state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[0];
-		//state->discardCount[nextPlayer]++;
-	//}
-	//if (tributeRevealedCards[1] != -1)
-	//{
-		//state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[1];
-		//state->discardCount[nextPlayer]++;
-	//}
-	/*
-	printf("   : discard[nextPlayer %d][-1 %d]: %d\n",
-			nextPlayer, state->discardCount[nextPlayer] -1, state->discard[nextPlayer][state->discardCount[nextPlayer] -1]);
-	printf("   : discard[nextPlayer %d][-2 %d]: %d\n",
-			nextPlayer, state->discardCount[nextPlayer] -2, state->discard[nextPlayer][state->discardCount[nextPlayer] -2]);
-	printf("   : state->numActions now %d\n", state->numActions);
 
-	printf("END TRACE 'tribute' ==========================================================================\n");
-	*/
         return 0;
 
     case ambassador:

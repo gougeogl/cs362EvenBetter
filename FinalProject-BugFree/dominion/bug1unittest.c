@@ -128,27 +128,6 @@ int main()
 		}
 	}
 
-	//if (backup.playedCards[backup.playedCardCount - 1] == copper)
-	//{
-	//	if ((G.playedCards[G.playedCardCount - 1] == copper) &&
-	//		(G.playedCards[G.playedCardCount - 2] == copper))
-	//	{
-	//		//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
-	//		printf("Error Mine: choice1 found in playedCards NOT in trash.\n\n");
-	//	}
-	//}
-
-	/*	Assert that the discardCount has not changed, otherwise print
-		'discardCount changed but shouldn't have'. */
-
-	//if (backup.playedCardCount - 1 != G.playedCardCount - 1)
-	/*
-	if (backup.discardCount[currentPlayer] != G.discardCount[currentPlayer])
-	{
-		printf("Error Mine: discardCount changed.\n\n");
-	}
-	*/
-
 	/* The handCount should change.
 	   Assert if backup.handCount[currentPlayer] == G.handCount[currentPlayer]
 	   print 'Error Mine: handCount didn't change.\n'	*/

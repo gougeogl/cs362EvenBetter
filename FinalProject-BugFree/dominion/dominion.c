@@ -1020,13 +1020,26 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
             if (state->deckCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
-		// then put in discard
+
+		// THEN put last card from next player's deck into their discard
+	    	state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+	    	// set the old deck card value to invalid
+	    	state->deck[nextPlayer][state->deckCount[nextPlayer]-1] = -1;
+            	// increment / decrement counts for discard and deck
+	    	state->discardCount[nextPlayer]++;
                 state->deckCount[nextPlayer]--;
+
             }
             else if (state->discardCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer]-1];
-		// then put in discard
-                state->discardCount[nextPlayer]--;
+
+		// THEN put last card from next player's deck into their discard
+	    	state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+	    	// set the old deck card value to invalid
+	    	state->deck[nextPlayer][state->deckCount[nextPlayer]-1] = -1;
+            	// increment / decrement counts for discard and deck
+	    	state->discardCount[nextPlayer]++;
+                state->deckCount[nextPlayer]--;
             }
             else {
                 //No Card to Reveal
@@ -1051,11 +1064,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	    // THEN put last card from next player's deck into their discard
 	    state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
-		//printf("==> state->discard[nextPlayer][state->discardCount[nextPlayer]: %d\n", state->discard[nextPlayer][state->discardCount[nextPlayer]]);
-		//printf("==> state->deck[nextPlayer][state->deckCount[nextPlayer]-1]]; %d\n", state->deck[nextPlayer][state->deckCount[nextPlayer]-1]);
 	    // set the old deck card value to invalid
 	    state->deck[nextPlayer][state->deckCount[nextPlayer]-1] = -1;
-            // decrement counts for discard and deck
+            // increment / decrement counts for discard and deck
 	    state->discardCount[nextPlayer]++;
 	    state->deckCount[nextPlayer]--;
 
@@ -1065,12 +1076,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	    state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	    // set the old deck card value to invalid
 	    state->deck[nextPlayer][state->deckCount[nextPlayer]-1] = -1;
-            // decrement counts for discard and deck
+            // increment / decrement counts for discard and deck
 	    state->discardCount[nextPlayer]++;
 	    state->deckCount[nextPlayer]--;
 
-		//printf("SUPER TRACE: tributeRevealedCards[0]: %d\n", tributeRevealedCards[0]);
-		//printf("SUPER TRACE: tributeRevealedCards[1]: %d\n", tributeRevealedCards[1]);
         }
 
         if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one

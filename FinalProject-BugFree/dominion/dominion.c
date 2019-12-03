@@ -1052,7 +1052,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	    // put last card from next player's deck into tributeRevealedCards[0] 
             tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	    // THEN put last card from next player's deck into their discard
-	    state->discard[nextPlayer][state->discardCount[nextPlayer] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1]];
+	    state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+		//printf("==> state->discard[nextPlayer][state->discardCount[nextPlayer]: %d\n", state->discard[nextPlayer][state->discardCount[nextPlayer]]);
+		//printf("==> state->deck[nextPlayer][state->deckCount[nextPlayer]-1]]; %d\n", state->deck[nextPlayer][state->deckCount[nextPlayer]-1]);
 	    // set the old deck card value to invalid
 	    state->deck[nextPlayer][state->deckCount[nextPlayer]-1] = -1;
             // decrement counts for discard and deck
@@ -1062,15 +1064,15 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	    // put last card from next player's deck into tributeRevealedCards[0] 
             tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	    // THEN put last card from next player's deck into their discard
-	    state->discard[nextPlayer][state->discardCount[nextPlayer] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1]];
+	    state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	    // set the old deck card value to invalid
 	    state->deck[nextPlayer][state->deckCount[nextPlayer]-1] = -1;
             // decrement counts for discard and deck
 	    state->discardCount[nextPlayer]++;
 	    state->deckCount[nextPlayer]--;
 
-		printf("SUPER TRACE: tributeRevealedCards[0]: %d\n", tributeRevealedCards[0]);
-		printf("SUPER TRACE: tributeRevealedCards[1]: %d\n", tributeRevealedCards[1]);
+		//printf("SUPER TRACE: tributeRevealedCards[0]: %d\n", tributeRevealedCards[0]);
+		//printf("SUPER TRACE: tributeRevealedCards[1]: %d\n", tributeRevealedCards[1]);
         }
 
         if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one
@@ -1114,11 +1116,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			//printf("AFTER state->numActions = state->numActions + 2, numActions = %d\n", state->numActions);
             }
         }
-	/*
+	/*	
 	printf("TRACE: 'tribute'\n");
 	printf("     : at end of function..\n");
 	printf("     : tributeRevealedCards[0]: %d\n", tributeRevealedCards[0]);
 	printf("     : tributeRevealedCards[1]: %d\n", tributeRevealedCards[1]);
+	*/
 	//if (tributeRevealedCards[0] != -1)
 	//{
 		//state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[0];
@@ -1129,15 +1132,15 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 		//state->discard[nextPlayer][state->discardCount[nextPlayer]] = tributeRevealedCards[1];
 		//state->discardCount[nextPlayer]++;
 	//}
-
-	printf("    : discard[nextPlayer %d][-1 %d]: %d\n", 
+	/*
+	printf("   : discard[nextPlayer %d][-1 %d]: %d\n", 
 			nextPlayer, state->discardCount[nextPlayer] -1, state->discard[nextPlayer][state->discardCount[nextPlayer] -1]);
-	printf("    : discard[nextPlayer %d][-2 %d]: %d\n", 
+	printf("   : discard[nextPlayer %d][-2 %d]: %d\n", 
 			nextPlayer, state->discardCount[nextPlayer] -2, state->discard[nextPlayer][state->discardCount[nextPlayer] -2]);
-	printf("    : state->numActions now %d\n", state->numActions);
-	*/
-	printf("END TRACE 'tribute' ==========================================================================\n");
+	printf("   : state->numActions now %d\n", state->numActions);
 	
+	printf("END TRACE 'tribute' ==========================================================================\n");
+	*/	
         return 0;
 
     case ambassador:

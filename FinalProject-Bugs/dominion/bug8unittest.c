@@ -41,11 +41,12 @@ G.whoseTurn = currentPlayer;
 
 //feast == 9;
 
-G.coins = 0;
+G.hand[currentPlayer][0] = baron;
+
+updateCoins(currentPlayer, &G, 0);
 
 int coinStorage = G.coins;
 
-G.hand[currentPlayer][0] = baron;
 
 printf("\n");
 printf("Testing gaining bonus coins....\n");

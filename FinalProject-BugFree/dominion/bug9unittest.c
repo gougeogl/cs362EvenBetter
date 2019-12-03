@@ -68,9 +68,8 @@ int main()
 	int newHandSize = 1;
 	int tribute_index = 0; // handPos tribute .. not really used
 	int cardInDeck = -1;
-	char* test_1_message = "Place 2 treasures at top of next player's deck, then call tribute.";
-	char* test_2_message = "Place 2 Victory cards at top of next player's deck, then call tribute.";
-	char* test_3_message = "Place 2 non-coin & non-victory (curses) at top of next player's deck, then call tribute.";
+	char* test_1_message = "Place 2 action cards at top of next player's deck, then call tribute.";
+	char* test_2_message = "Place 2 curse cards at top of next player's deck, then call tribute.";
 
 	// SUBTEST 1 -- 2 adventurer cards
 	initTestGame(numPlayers, kingdomCards, seed, &G);
@@ -249,8 +248,8 @@ void subTestTribute(
 void runAsserts(struct gameState* before, struct gameState* after)
 {
 	int currentPlayer = after->whoseTurn;
-	//int currentPlayer = 0;
 	int nextPlayer = currentPlayer + 1;
+	int totalActions = 0;
 
 	char name[MAX_STRING_LENGTH];
 	char nombre[MAX_STRING_LENGTH];
@@ -288,7 +287,7 @@ void runAsserts(struct gameState* before, struct gameState* after)
 		}
 	}
 
-	int total_non_treasure_non_victories = 0;
+	// if next player's discard contains the adventurer, increment the valid # of actions
 	if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] == adventurer ||
 		after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == adventurer) {
 

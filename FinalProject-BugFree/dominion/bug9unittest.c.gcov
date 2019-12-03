@@ -1,0 +1,356 @@
+        -:    0:Source:bug9unittest.c
+        -:    0:Graph:bug9unittest.gcno
+        -:    0:Data:bug9unittest.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*************************************************
+        -:    2:* FileName: bug7unittest.c
+        -:    3:* Author:	Glen Gougeon
+        -:    4:* Class:	CS362 Software Engineering II
+        -:    5:* Created:	11-30-2019
+        -:    6:* Last Mod:	12-2-2019
+        -:    7:*
+        -:    8:* Assignement: Final Project Part B/
+        -:    9:*
+        -:   10:* Description:	Unit Test for Bug 9:
+        -:   11:*				TributeRevealedCards Illegal Action Gain
+        -:   12:*
+        -:   13:**************************************************/
+        -:   14:#include <stdio.h>
+        -:   15:#include <math.h>
+        -:   16:#include <stdlib.h>
+        -:   17:#include <string.h>
+        -:   18:
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "interface.h"
+        -:   22:#include "rngs.h"
+        -:   23:
+        -:   24:// TEST PROTO-TYPES
+        -:   25:void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game);
+        -:   26:
+        -:   27:// sets variable states and calls 'cardEffect' w/ 'tribute' as card
+        -:   28:void subTestTribute(
+        -:   29:	int testNo,
+        -:   30:	char* message,
+        -:   31:	struct gameState* oldState,
+        -:   32:	struct gameState* newState,
+        -:   33:	int newHandSize,
+        -:   34:	int tribute_index,
+        -:   35:	int cardInDeck
+        -:   36:);
+        -:   37:
+        -:   38:// must be called after subTestTribute
+        -:   39:void runAsserts(
+        -:   40:	struct gameState* before, 
+        -:   41:	struct gameState* after 
+        -:   42:);
+        -:   43:
+        -:   44:// HELPER PROTOS-TYPES
+        -:   45:void emptyDeck(int player, struct gameState* state);
+        -:   46:void emptyPlayedCards(struct gameState* state);
+        -:   47:void emptyDiscard(int player, struct gameState* state);
+        -:   48:
+        -:   49:// HAND RELATED PROTO-TYPES
+        -:   50:void emptyHand(int player, struct gameState* dState);
+        -:   51:void setNewHandCount(int player, struct gameState* state, int newHandSize);
+        -:   52:void setAtHandPos(int player, struct gameState* state, int card, int handPos);
+        -:   53:
+function main called 1 returned 100% blocks executed 100%
+        -:   54:int main()
+        -:   55:{
+        1:   56:	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+        1:   57:	printf("*** START Bug9 Unit Test: TributeRevealedCards Illegal Action Gain ***\n");
+        1:   58:	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n\n");
+        -:   59:
+        1:   60:	int kingdomCards[10] = { adventurer, ambassador, baron, curse, estate, tribute, minion, mine, gardens, remodel };
+        -:   61:
+        -:   62:	struct gameState G;
+        -:   63:	struct gameState backup;
+        -:   64:
+        1:   65:	int seed = 1;
+        1:   66:	int numPlayers = 2;
+        -:   67:	//int currentPlayer = 0;
+        1:   68:	int newHandSize = 1;
+        1:   69:	int tribute_index = 0; // handPos tribute .. not really used
+        1:   70:	int cardInDeck = -1;
+        1:   71:	char* test_1_message = "Place 2 action cards at top of next player's deck, then call tribute.";
+        1:   72:	char* test_2_message = "Place 2 curse cards at top of next player's deck, then call tribute.";
+        -:   73:
+        -:   74:	// SUBTEST 1 -- 2 adventurer cards
+        1:   75:	initTestGame(numPlayers, kingdomCards, seed, &G);
+        1:   76:	G.numActions = 0;
+        1:   77:	cardInDeck = adventurer;
+        1:   78:	subTestTribute(1, test_1_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
+        1:   79:	runAsserts(&backup,&G);
+        1:   80:	printf("------------------------------------------------------------------------------------\n");
+        -:   81:
+        -:   82:	// SUBTEST 2 -- 2 curse cards
+        1:   83:	initTestGame(numPlayers, kingdomCards, seed, &G);
+        1:   84:	G.numActions = 0;
+        1:   85:	cardInDeck = curse;
+        1:   86:	subTestTribute(2, test_2_message, &backup, &G, newHandSize, tribute_index, cardInDeck);
+        1:   87:	runAsserts(&backup, &G);
+        1:   88:	printf("------------------------------------------------------------------------------------\n");
+        -:   89:
+        1:   90:	return 0;
+        -:   91:}
+        -:   92:
+        -:   93:/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:   94:/* *** FUNCTION SPECIFICATIONS ***																	*/
+        -:   95:/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:   96:
+        -:   97:/* This function adds memset initialization, and prints error if fail  */
+function initTestGame called 2 returned 100% blocks executed 75%
+        -:   98:void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game)
+        -:   99:{
+        2:  100:	memset(game, '\0', sizeof(struct gameState));   // clear mem of 
+        -:  101:
+        2:  102:	int checkInit = initializeGame(numPlayers, kDeck, mySeed, game); // initialize 2 player game 
+        -:  103:
+        2:  104:	if (checkInit == -1)
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  105:	{
+    #####:  106:		printf("Bad game initialization.\n");
+    #####:  107:	}
+        -:  108:
+        2:  109:}
+        -:  110:
+        -:  111:// set player to remove all cards from current player's deck  
+function emptyDeck called 4 returned 100% blocks executed 100%
+        -:  112:void emptyDeck(int player, struct gameState* state)
+        -:  113:{
+        4:  114:	int i = 0;
+       48:  115:	while (i < state->deckCount[player])
+branch  0 taken 83%
+branch  1 taken 17%
+        -:  116:	{
+       20:  117:		state->deck[player][i] = -1;
+       20:  118:		i++;
+        -:  119:	}
+        4:  120:	state->deckCount[player] = 0;
+        4:  121:}
+        -:  122:
+        -:  123:// set player to remove all cards from current player's deck   
+function emptyPlayedCards called 4 returned 100% blocks executed 80%
+        -:  124:void emptyPlayedCards(struct gameState* state)
+        -:  125:{
+        4:  126:	int i = 0;
+        8:  127:	while (i < state->playedCardCount)
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  128:	{
+    #####:  129:		state->playedCards[i] = -1;
+    #####:  130:		i++;
+        -:  131:	}
+        4:  132:	state->playedCardCount = 0;
+        4:  133:}
+        -:  134:
+        -:  135:// eliminate all cards from discard.   
+function emptyDiscard called 4 returned 100% blocks executed 80%
+        -:  136:void emptyDiscard(int player, struct gameState* state)
+        -:  137:{
+        4:  138:	int i = 0;
+        8:  139:	while (i < state->discardCount[player])
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  140:	{
+    #####:  141:		state->discard[player][i] = -1;
+    #####:  142:		i++;
+        -:  143:	}
+        4:  144:	state->discardCount[player] = 0;
+        4:  145:}
+        -:  146:
+        -:  147:/* Sets current player's handCount to newHandSize, then
+        -:  148:	overwrites everything in hand with -1 */
+function emptyHand called 4 returned 100% blocks executed 100%
+        -:  149:void emptyHand(int player, struct gameState* state)
+        -:  150:{
+        -:  151:	int i;
+       48:  152:	for (i = 0; i < state->handCount[player]; i++)
+branch  0 taken 83%
+branch  1 taken 17%
+        -:  153:	{
+       20:  154:		state->hand[player][i] = -1;
+       20:  155:	}
+        4:  156:	state->handCount[player] = 0;
+        4:  157:}
+        -:  158:
+        -:  159:// sets handCount of player to newHandSize
+function setNewHandCount called 2 returned 100% blocks executed 100%
+        -:  160:void setNewHandCount(int player, struct gameState* state, int newHandSize)
+        -:  161:{
+        2:  162:	state->handCount[player] = newHandSize;
+        2:  163:}
+        -:  164:
+        -:  165:// adds indicated card in current player's hand at handPos 
+function setAtHandPos called 2 returned 100% blocks executed 100%
+        -:  166:void setAtHandPos(int player, struct gameState* state, int card, int handPos)
+        -:  167:{
+        2:  168:	state->hand[player][handPos] = card;
+        2:  169:}
+        -:  170:
+        -:  171:// Use for running subtest on 'tribute' case of 'cardEffect' function
+function subTestTribute called 2 returned 100% blocks executed 100%
+        -:  172:void subTestTribute(
+        -:  173:	// parameters
+        -:  174:	int testNo,
+        -:  175:	char* message,
+        -:  176:	struct gameState* oldState, 
+        -:  177:	struct gameState* newState, 
+        -:  178:	int newHandSize, 
+        -:  179:	int tribute_index, 
+        -:  180:	int cardInDeck)
+        -:  181:	// end paramaters
+        -:  182:{
+        2:  183:	printf(" SUB-TEST %d: %s\n\n", testNo, message);
+        -:  184:
+        -:  185:	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:  186:	/* ** SETUP TEST SECTION ** */
+        -:  187:	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:  188:
+        2:  189:	int idxOfChoice1 = 0; // choice1 tribute
+        2:  190:	int blank = -1;
+        2:  191:	int coinBonus = 0;
+        2:  192:	int currentPlayer = newState->whoseTurn;
+        2:  193:	int nextPlayer = currentPlayer + 1;
+        -:  194:
+        -:  195:	/* MMMMMMMMM SET UP CURRENT PLAYER *** MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/
+        -:  196:
+        -:  197:	// empty every deck currentPlayer has
+        2:  198:	emptyDeck(currentPlayer, newState);
+        2:  199:	emptyPlayedCards(newState); // req'd. b/c 'discardCard' is broken !!
+        2:  200:	emptyDiscard(currentPlayer, newState);
+        2:  201:	emptyHand(currentPlayer, newState);
+        -:  202:
+        -:  203:	// set up new hand size after empty
+        2:  204:	setNewHandCount(currentPlayer, newState, newHandSize);
+        -:  205:
+        -:  206:	// place tribute card in hand
+        2:  207:	setAtHandPos(currentPlayer, newState, tribute, tribute_index);
+        -:  208:
+        -:  209:	// set coins appropriately
+        2:  210:	updateCoins(currentPlayer, newState, coinBonus);
+        -:  211:
+        -:  212:	/* MMMMMMMMM SET UP NEXT PLAYER *** MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/
+        -:  213:
+        -:  214:	// empty every deck currentPlayer has
+        2:  215:	emptyDeck(nextPlayer, newState);
+        2:  216:	emptyPlayedCards(newState); // req'd. b/c 'discardCard' is broken !!
+        2:  217:	emptyDiscard(nextPlayer, newState);
+        2:  218:	emptyHand(nextPlayer, newState);
+        -:  219:	
+        -:  220:	// subtest 1 = ensure only 2 golds are in next player's hand
+        -:  221:	// subtest 2 = ensure only 2 victory cards are in next player's hand
+        -:  222:	// subtest 3 = ensure only 2 action cards are in next player's hand
+        -:  223:	// subtest 4 = ensure only 2..
+        -:  224:	//			   non-treasure, non-victory, non-action cards are in next player's hand
+        -:  225:
+        -:  226:	// empty supply of cardInDeck to ensure the ones 
+        -:  227:	// going into deck are the only ones possible
+        2:  228:	newState->supplyCount[cardInDeck] = 0;
+        -:  229:
+        -:  230:	// place 2 cards in nextPlayer's deck then increment
+        2:  231:	newState->deck[nextPlayer][newState->deckCount[nextPlayer]] = cardInDeck;
+        2:  232:	newState->deckCount[nextPlayer]++;
+        2:  233:	newState->deck[nextPlayer][newState->deckCount[nextPlayer]] = cardInDeck;
+        2:  234:	newState->deckCount[nextPlayer]++;
+        -:  235:
+        -:  236:	/* BACK UP STATE BEFORE CALL */
+        2:  237:	memset(oldState, '\0', sizeof(*oldState));
+        2:  238:	oldState = newState;
+        -:  239:
+        -:  240:	/* CALL TO TRIBUTE <-----------------------------------------------------*/
+        2:  241:	cardEffect(tribute, idxOfChoice1, blank, blank, newState, tribute_index, &coinBonus);
+        -:  242:
+        2:  243:}
+        -:  244:
+        -:  245:/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:  246:/* ** ASSERTS SECTION ** */
+        -:  247:/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+function runAsserts called 2 returned 100% blocks executed 71%
+        -:  248:void runAsserts(struct gameState* before, struct gameState* after)
+        -:  249:{
+        2:  250:	int currentPlayer = after->whoseTurn;
+        2:  251:	int nextPlayer = currentPlayer + 1;
+        2:  252:	int totalActions = 0;
+        -:  253:
+        -:  254:	char name[MAX_STRING_LENGTH];
+        -:  255:	char nombre[MAX_STRING_LENGTH];
+        -:  256:
+        -:  257:	/*Assert that the top 2 cards from the next player's previous deck
+        -:  258:	are exactly the ones found in their discard (playedCards) after the use of tribute.*/
+        2:  259:	if (before->deck[nextPlayer][before->deckCount[nextPlayer]] != after->discard[nextPlayer][after->discardCount[nextPlayer]])
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  260:	{
+    #####:  261:		if (before->deck[nextPlayer][before->deckCount[nextPlayer] - 2] != after->discard[nextPlayer][after->discardCount[nextPlayer] - 2])
+branch  0 never executed
+branch  1 never executed
+        -:  262:		{
+    #####:  263:			memset(name, '\0', sizeof name);
+    #####:  264:			cardNumToName(after->discard[nextPlayer][after->discardCount[nextPlayer] - 1], name);
+        -:  265:
+    #####:  266:			memset(nombre, '\0', sizeof nombre);
+    #####:  267:			cardNumToName(after->discard[nextPlayer][after->discardCount[nextPlayer] - 1], nombre);
+        -:  268:
+    #####:  269:			printf("Tribute Error: previous top 2 deck cards next player..\n");
+    #####:  270:			printf("               not found in next player's discard.\n\n");
+    #####:  271:			printf("               Discard top 2:\n");
+    #####:  272:			printf("               G.discard[%d]: %s\n", after->discardCount[nextPlayer] - 1, name);
+    #####:  273:			printf("               G.discard[%d]: %s\n\n", after->discardCount[nextPlayer] - 2, nombre);
+    #####:  274:		}
+    #####:  275:	}
+        -:  276:
+        -:  277:	/*Assert that the counts of the next player's discard and deck counts
+        -:  278:	are correct, such that their deckCount is 2 less than previously, and
+        -:  279:	their discardCount is 2 greater than previously.*/
+        2:  280:	if (before->deckCount[nextPlayer] - 2 != after->deckCount[nextPlayer])
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  281:	{
+        2:  282:		if (before->discardCount[nextPlayer] + 2 != after->discardCount[nextPlayer])
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  283:		{
+    #####:  284:			printf("Tribute Error: next player's deckCount not -2 previous.\n");
+    #####:  285:			printf("             : next player's discardCount not +2 previous.\n\n");
+        -:  286:
+    #####:  287:		}
+        2:  288:	}
+        -:  289:
+        -:  290:	// if next player's discard contains the adventurer, increment the valid # of actions
+        3:  291:	if (after->discard[nextPlayer][after->discardCount[nextPlayer] - 1] == adventurer ||
+branch  0 taken 50%
+branch  1 taken 50%
+branch  2 taken 0%
+branch  3 taken 100%
+        1:  292:		after->discard[nextPlayer][after->discardCount[nextPlayer] - 2] == adventurer) {
+        -:  293:
+        1:  294:		totalActions += 2;
+        1:  295:	}
+        -:  296:
+        2:  297:	if (totalActions == 2)
+branch  0 taken 50%
+branch  1 taken 50%
+        -:  298:	{
+        1:  299:		if (before->numActions + 2 != after->numActions)
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  300:		{
+    #####:  301:			printf("TRACE: totalActions %d\n", totalActions);
+    #####:  302:			printf("Tribute Error: You had 1 action card in discard, but didn't gain 2 actions.\n\n");
+    #####:  303:		}
+        1:  304:	}
+        2:  305:	else if (totalActions == 0 && (before->numActions != after->numActions))
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 0%
+branch  3 taken 100%
+        -:  306:	{
+    #####:  307:		printf("TRACE: totalActions %d\n", totalActions);
+    #####:  308:		printf("TRACE: before->numActions %d, after->numActions %d\n", before->numActions, after->numActions);
+    #####:  309:		printf("Tribute Error: You gained actions, but didn't find any action cards in discard.\n\n");
+    #####:  310:	}
+        2:  311:}

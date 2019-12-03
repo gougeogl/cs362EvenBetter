@@ -1,0 +1,303 @@
+        -:    0:Source:bug1b_unittest.c
+        -:    0:Graph:bug1b_unittest.gcno
+        -:    0:Data:bug1b_unittest.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*************************************************
+        -:    2:* FileName: bug1b_unittest.c
+        -:    3:* Author:	Glen Gougeon
+        -:    4:* Class:	CS362 Software Engineering II
+        -:    5:* Created:	11-29-2019
+        -:    6:* Last Mod:	11-29-2019
+        -:    7:*
+        -:    8:* Assignement: Final Project Part B/
+        -:    9:*
+        -:   10:* Description:	Unit Test for Bug 1b:
+        -:   11:*				Remodel Trash failure
+        -:   12:*
+        -:   13:**************************************************/
+        -:   14:#include <stdio.h>
+        -:   15:#include <math.h>
+        -:   16:#include <stdlib.h>
+        -:   17:#include <string.h>
+        -:   18:
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "interface.h"
+        -:   22:#include "rngs.h"
+        -:   23:
+        -:   24:// TEST PROTO-TYPES
+        -:   25:void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game);
+        -:   26:
+        -:   27:// HELPER PROTOS-TYPES
+        -:   28:void emptyDeck(int player, struct gameState* state);
+        -:   29:void emptyDiscard(int player, struct gameState* state);
+        -:   30:
+        -:   31:// HAND RELATED PROTO-TYPES
+        -:   32:void emptyHand(int player, struct gameState* dState);
+        -:   33:void setNewHandCount(int player, struct gameState* state, int newHandSize);
+        -:   34:void setAtHandPos(int player, struct gameState* state, int card, int handPos);
+        -:   35:
+function main called 1 returned 100% blocks executed 63%
+        -:   36:int main()
+        -:   37:{
+        1:   38:	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+        1:   39:	printf("*** START Bug1-B Unit Test: Remodel Trash Failure ***\n");
+        1:   40:	printf("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n");
+        -:   41:
+        -:   42:	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:   43:	/* ** SETUP TEST SECTION ** */
+        -:   44:	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:   45:
+        1:   46:	int kingdomCards[10] = { adventurer, ambassador, baron, estate, tribute, minion, mine,  gardens, remodel, smithy };
+        -:   47:
+        -:   48:	struct gameState G;
+        -:   49:	struct gameState backup;
+        -:   50:
+        1:   51:	int seed = 1;
+        1:   52:	int numPlayers = 2;
+        1:   53:	int currentPlayer = 0;
+        1:   54:	int newHandSize = 2;
+        1:   55:	int remodel_index = 0; // handPos remodel
+        1:   56:	int idxOfChoice1 = 1; // choice1 remodel
+        1:   57:	int cardToGet = estate; // choice2 remodel
+        1:   58:	int blank = -1;
+        1:   59:	int coinBonus = 0;
+        -:   60:
+        -:   61:	// initialize and set currentPlayer
+        1:   62:	initTestGame(numPlayers, kingdomCards, seed, &G);
+        1:   63:	currentPlayer = G.whoseTurn;
+        -:   64:
+        -:   65:	// empty every deck currentPlayer has
+        1:   66:	emptyDeck(currentPlayer, &G);
+        1:   67:	emptyDiscard(currentPlayer, &G);
+        1:   68:	emptyHand(currentPlayer, &G);
+        -:   69:
+        -:   70:	// you will only have a copper in your hand
+        1:   71:	setNewHandCount(currentPlayer, &G, newHandSize);
+        -:   72:
+        -:   73:	// place remodel card in hand
+        1:   74:	setAtHandPos(currentPlayer, &G, remodel, remodel_index);
+        -:   75:
+        -:   76:	// The only copper in the game is in currentPlayer's hand
+        1:   77:	G.supplyCount[copper] = 0;
+        -:   78:
+        -:   79:	// The only silver in the game is THIS in supply
+        1:   80:	G.supplyCount[estate] = 0;
+        1:   81:	G.supplyCount[estate] = 1;
+        -:   82:
+        1:   83:	setAtHandPos(currentPlayer, &G, copper, idxOfChoice1);
+        1:   84:	updateCoins(currentPlayer, &G, coinBonus);
+        -:   85:
+        -:   86:	/* BACK UP STATE BEFORE CALL */
+        1:   87:	memset(&backup, '\0', sizeof(backup));
+        1:   88:	backup = G;
+        -:   89:
+        -:   90:	/* CALL TO REMODEL <-----------------------------------------------------*/
+        1:   91:	cardEffect(remodel, idxOfChoice1, cardToGet, blank, &G, remodel_index, &coinBonus);
+        -:   92:
+        -:   93:	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:   94:	/* ** ASSERTS SECTION ** */
+        -:   95:	/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:   96:	
+        -:   97:	/* a) Assert that choice1(an index) is a different card, otherwise print that it
+        -:   98:	   is the same. */
+        1:   99:	if (backup.hand[currentPlayer][idxOfChoice1] == backup.hand[currentPlayer][idxOfChoice1])
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  100:	{
+        1:  101:		printf("Error Remodel: choice1 is still the same but shouldn't be.\n\n");
+        1:  102:	}
+        -:  103:
+        -:  104:	/* b) Assert if top of previous discard was not the same as choice1, and
+        -:  105:	   choice1 is found at the top of discard, print 'choice1 discarded
+        -:  106:	   not trashed'. */
+        -:  107:
+        -:  108:	// b) IF DISCARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        1:  109:	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] != copper)
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  110:	{
+        1:  111:		if (G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper)
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  112:		{
+    #####:  113:			printf("Error Remodel: choice1 found at top of discard, but should be at top of trashPile.\n\n");
+    #####:  114:		}
+        1:  115:	}
+        -:  116:	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        -:  117:
+        -:  118:	if (backup.playedCards[backup.playedCardCount - 1] != copper)
+        -:  119:	{
+        -:  120:		if (G.playedCards[G.playedCardCount - 1] == copper)
+        -:  121:		{
+        -:  122:			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
+        -:  123:			printf("Error Remodel: choice1 found in playedCards, but should be at top of trashPile.\n\n");
+        -:  124:		}
+        -:  125:	} */
+        -:  126:
+        -:  127:	/* Assert if top of previous discard was the same as choice1, and the
+        -:  128:	   top 2 cards in discard are both choice1, print 'choice1 discarded
+        -:  129:	   not trashed'. */
+        -:  130:
+        -:  131:	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        1:  132:	if (backup.discard[currentPlayer][backup.discardCount[currentPlayer] -1] == copper)
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  133:	{
+    #####:  134:		if ((G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == copper) &&
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  135:			(G.discard[currentPlayer][G.discardCount[currentPlayer] - 2] == copper))
+        -:  136:		{
+    #####:  137:			printf("Error Remodel: choice1 discarded not trashed.\n\n");
+    #####:  138:		}
+    #####:  139:	}
+        -:  140:	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        -:  141:
+        -:  142:	if (backup.playedCards[backup.playedCardCount - 1] == copper)
+        -:  143:	{
+        -:  144:		if ((G.playedCards[G.playedCardCount - 1] == copper) &&
+        -:  145:			(G.playedCards[G.playedCardCount - 2] == copper))
+        -:  146:		{
+        -:  147:			//printf("Error 'discardCard': should be discard .. but is playedCards array\n");
+        -:  148:			printf("Error Remodel: choice1 found in playedCards NOT in trash.\n\n");
+        -:  149:		}
+        -:  150:	}*/
+        -:  151:
+        -:  152:	/* Assert if backup.supplyCount[choice2] > 0 and choice2 was not in
+        -:  153:   previous top of discard, and is not in current top of discard, print
+        -:  154:   'choice2 not found in top of discard after remodel'. */
+        -:  155:
+        -:  156:	/* IF DISCARD CARD WAS REFACTORED - VERSION COMMENTED OUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        1:  157:	if (backup.supplyCount[cardToGet] > 0)
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  158:	{
+        2:  159:		if ((backup.discard[currentPlayer][backup.discardCount[currentPlayer] - 1] != cardToGet) &&
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 0%
+branch  3 taken 100%
+        1:  160:			(G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] != cardToGet))
+        -:  161:		{
+    #####:  162:			printf("Error Remodel. choice2 card to gain not found in top of discard after remodel.\n\n");
+    #####:  163:		}
+        1:  164:	}
+        -:  165:	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        -:  166:
+        -:  167:	if (backup.supplyCount[cardToGet] > 0)
+        -:  168:	{
+        -:  169:		if ((backup.playedCards[backup.playedCardCount - 1] != cardToGet) &&
+        -:  170:			(G.playedCards[G.playedCardCount - 1] != cardToGet))
+        -:  171:		{
+        -:  172:			printf("Error Remodel. choice2 card to gain not found in top of discard after remodel.\n");
+        -:  173:			printf("               *actually not in playedCards .. b/c that is where 'discardCard' places cards.\n\n");
+        -:  174:		}
+        -:  175:	}*/
+        -:  176:
+        -:  177:	/* The handCount should change.
+        -:  178:   Assert if backup.handCount[currentPlayer] == G.handCount[currentPlayer]
+        -:  179:   print 'Error Remodel: handCount didn't change.\n'	*/
+        1:  180:	if (backup.handCount[currentPlayer] == G.handCount[currentPlayer])
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  181:	{
+    #####:  182:		printf("Error Remodel: handCount didn't change.\n");
+    #####:  183:	}
+        -:  184:
+        -:  185:	/* Compare the supplyCount[estate] before and after the call.If the
+        -:  186:	   current count is not 1 less than previous, then print
+        -:  187:	   'choice2 estate not 1 less than previous' */
+        1:  188:	if (backup.supplyCount[estate] - 1 != G.supplyCount[estate])
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  189:	{
+    #####:  190:		printf("Error Remodel: choice2 estate is not -1 previous supplyCount.\n\n");
+    #####:  191:	}
+        -:  192:
+        1:  193:	printf("*** END Bug1-B Unit Test ***\n\n");
+        1:  194:	return 0;
+        -:  195:}
+        -:  196:
+        -:  197:/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:  198:/* *** FUNCTION SPECIFICATIONS ***																	*/
+        -:  199:/* MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM */
+        -:  200:
+        -:  201:/* This function adds memset initialization, and prints error if fail  */
+function initTestGame called 1 returned 100% blocks executed 75%
+        -:  202:void initTestGame(int numPlayers, int* kDeck, int mySeed, struct gameState* game)
+        -:  203:{
+        1:  204:	memset(game, '\0', sizeof(struct gameState));   // clear mem of 
+        -:  205:
+        1:  206:	int checkInit = initializeGame(numPlayers, kDeck, mySeed, game); // initialize 2 player game 
+        -:  207:
+        1:  208:	if (checkInit == -1)
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  209:	{
+    #####:  210:		printf("Bad game initialization.\n");
+    #####:  211:	}
+        -:  212:
+        1:  213:}
+        -:  214:
+        -:  215:// set player to remove all estates from current player's deck  
+function emptyDeck called 1 returned 100% blocks executed 100%
+        -:  216:void emptyDeck(int player, struct gameState* state)
+        -:  217:{
+        1:  218:	int i = 0;
+       12:  219:	while (i < state->deckCount[player])
+branch  0 taken 83%
+branch  1 taken 17%
+        -:  220:	{
+        5:  221:		state->deck[player][i] = -1;
+        5:  222:		i++;
+        -:  223:	}
+        1:  224:	state->deckCount[player] = 0;
+        1:  225:}
+        -:  226:
+        -:  227:// eliminate all estates from discard.   
+function emptyDiscard called 1 returned 100% blocks executed 80%
+        -:  228:void emptyDiscard(int player, struct gameState* state)
+        -:  229:{
+        1:  230:	int i = 0;
+        2:  231:	while (i < state->discardCount[player])
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  232:	{
+    #####:  233:		state->discard[player][i] = -1;
+    #####:  234:		i++;
+        -:  235:	}
+        1:  236:	state->discardCount[player] = 0;
+        1:  237:}
+        -:  238:
+        -:  239:/* Sets current player's handCount to newHandSize, then
+        -:  240:	overwrites everything in hand with -1 */
+function emptyHand called 1 returned 100% blocks executed 100%
+        -:  241:void emptyHand(int player, struct gameState* state)
+        -:  242:{
+        -:  243:	int i;
+       12:  244:	for (i = 0; i < state->handCount[player]; i++)
+branch  0 taken 83%
+branch  1 taken 17%
+        -:  245:	{
+        5:  246:		state->hand[player][i] = -1;
+        5:  247:	}
+        1:  248:	state->handCount[player] = 0;
+        1:  249:}
+        -:  250:
+        -:  251:// sets handCount of player to newHandSize
+function setNewHandCount called 1 returned 100% blocks executed 100%
+        -:  252:void setNewHandCount(int player, struct gameState* state, int newHandSize)
+        -:  253:{
+        1:  254:	state->handCount[player] = newHandSize;
+        1:  255:}
+        -:  256:
+        -:  257:// adds indicated card in current player's hand at handPos 
+function setAtHandPos called 2 returned 100% blocks executed 100%
+        -:  258:void setAtHandPos(int player, struct gameState* state, int card, int handPos)
+        -:  259:{
+        2:  260:	state->hand[player][handPos] = card;
+        2:  261:}

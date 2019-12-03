@@ -1,0 +1,152 @@
+        -:    0:Source:bug6unittest.c
+        -:    0:Graph:bug6unittest.gcno
+        -:    0:Data:bug6unittest.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:
+        -:    2:#include "dominion.h"
+        -:    3:#include "dominion_helpers.h"
+        -:    4:#include "rngs.h"
+        -:    5:#include <stdio.h>
+        -:    6:#include <math.h>
+        -:    7:#include <stdlib.h>
+        -:    8:
+        -:    9:
+        -:   10:/*
+        -:   11:void assertLess (int coinStorage, int currentCoin) {
+        -:   12:
+        -:   13:    // Assertion
+        -:   14:    if (currentCoin == coinStorage) {
+        -:   15:        printf("Coins are correctly calculated for current player when buying card worth less than 5. No errors.\n\n");
+        -:   16:    }
+        -:   17:    else if (currentCoin > coinStorage) {
+        -:   18:        printf("Coins are incorrectly calculated for current player when buying card worth less than 5. Error detected -- player has too many coins.\n\n");
+        -:   19:    }
+        -:   20:
+        -:   21:    else {
+        -:   22:        printf("Coins are incorrectly calculated for current player when buying card worth less than 5. Error detected -- player had too few coins.\n\n");
+        -:   23:    }
+        -:   24:}
+        -:   25:
+        -:   26:
+        -:   27:void assertMore (int costs, int newCost) {
+        -:   28:
+        -:   29:    // Assertion
+        -:   30:    if (costs == newCost) {
+        -:   31:        printf("Purchase over 5 coins blocked. No errors.\n");
+        -:   32:    }
+        -:   33:
+        -:   34:    else if (newCost <= (costs+5)) {
+        -:   35:      printf("Purchase was acceptable (less than 5 coins). No errors.\n");
+        -:   36:    }
+        -:   37:
+        -:   38:    else {
+        -:   39:        printf("Player was able to buy card worth more than 5. Error detected.\n");
+        -:   40:    }
+        -:   41:}
+        -:   42:*/
+        -:   43:
+        -:   44:
+function main called 1 returned 100% blocks executed 100%
+        -:   45:int main () {
+        -:   46:
+        1:   47:printf("/****************************************\n");
+        1:   48:printf("/***********   BUG 6 TEST   *************\n");
+        1:   49:printf("/****************************************\n");
+        -:   50:
+        1:   51:printf("\n");
+        1:   52:printf("I actually spent a lot of time debugging this section before concluding that there is, in fact, no bug.\n");
+        1:   53:printf("The full write-up can be found in Part A, but a synopsis is below:\n");
+        -:   54:
+        1:   55:printf("\n");
+        -:   56:
+        1:   57:printf("The bug thread states that the updateCoins function is causing a bug by simply giving the player 5 coins.\n");
+        1:   58:printf("The argument is that this allows the player to spend more than 5 coins or keep the extras that are unspent.\n");
+        1:   59:printf("However, this is based on a misunderstanding of updateCoins(). This function doesn't simply give coins.\n");
+        1:   60:printf("Rather, it resets the coin count, and then gives fresh coins according to the player's hand and any passed-in bonus.\n");
+        1:   61:printf("In Feast, the hand is set to -1, and then 5 is passed into the updateCoins as a bonus, effectively resetting the coin count to 5, regardless of a player's treasure cards or existing coins.\n");
+        1:   62:printf("Then, the hand is restored, and updateCoins is called again with a bonus of 0, clearing any leftover coins from Feast.\n");
+        1:   63:printf("Together, these negate both of the bugs listed in the bug thread. There is no bug with updateCoins in Feast.\n");
+        -:   64:
+        -:   65:
+        -:   66:/*
+        -:   67:int currentPlayer = 0;
+        -:   68:
+        -:   69:struct gameState G;
+        -:   70:
+        -:   71:int * k = kingdomCards(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        -:   72:
+        -:   73:initializeGame (2, k, 8, &G);
+        -:   74:
+        -:   75:G.whoseTurn = currentPlayer;
+        -:   76:
+        -:   77://feast == 9;
+        -:   78:
+        -:   79:
+        -:   80:G.supplyCount[15] = 3;
+        -:   81:G.supplyCount[7] = 3;
+        -:   82:G.supplyCount[6] = 3;
+        -:   83:
+        -:   84:G.hand[currentPlayer][0] = feast;
+        -:   85:G.hand[currentPlayer][1] = feast;
+        -:   86:G.hand[currentPlayer][2] = gold;
+        -:   87:
+        -:   88:updateCoins(currentPlayer, &G, 0);
+        -:   89:
+        -:   90:int coinStorage = G.coins;
+        -:   91:
+        -:   92:
+        -:   93:printf("\n");
+        -:   94:printf("Testing buying card worth less than 5....\n");
+        -:   95://int playCard(int handPos, int choice1, int choice2, int choice3, struct gameState *state)
+        -:   96:playCard(0, 15, 0, 0, &G);
+        -:   97://cardEffect(9, 15, 0, 0, &G, 0, 0);
+        -:   98:
+        -:   99:int currentCoin = G.coins;
+        -:  100:
+        -:  101:assertLess(coinStorage, currentCoin);
+        -:  102:
+        -:  103:
+        -:  104:G.whoseTurn = currentPlayer;
+        -:  105:G.phase = 0;
+        -:  106:G.numActions = 1;
+        -:  107:
+        -:  108:int choice1 = 7;
+        -:  109:G.hand[currentPlayer][0] = feast;
+        -:  110:G.hand[currentPlayer][1] = feast;
+        -:  111:G.hand[currentPlayer][2] = gold;
+        -:  112://G.handCount[currentPlayer] = 3;
+        -:  113:
+        -:  114:printf("\n");
+        -:  115:printf("Testing buying card worth more than 5....\n");
+        -:  116:
+        -:  117:int costs = 0;
+        -:  118://cardEffect(9, choice1, 0, 0, &G, 1, 0);
+        -:  119:for (int e = 0; e < G.handCount[currentPlayer]; e++) {
+        -:  120:  costs = costs + getCost(G.hand[currentPlayer][e]);
+        -:  121:  //printf("adding Card: %d, Cost: %d\n", G.hand[currentPlayer][e], getCost(G.hand[currentPlayer][e]));
+        -:  122:}
+        -:  123:
+        -:  124:playCard(0, choice1, 0, 0, &G);
+        -:  125:
+        -:  126:
+        -:  127:int newCost = 0;
+        -:  128://cardEffect(9, choice1, 0, 0, &G, 1, 0);
+        -:  129:for (int e = 0; e < G.handCount[currentPlayer]; e++) {
+        -:  130:  newCost = newCost + getCost(G.hand[currentPlayer][e]);
+        -:  131:  //printf("adding Card: %d, Cost: %d\n", G.hand[currentPlayer][e], getCost(G.hand[currentPlayer][e]));
+        -:  132:
+        -:  133:}
+        -:  134:
+        -:  135://printf("cost, %d, new cost %d\n", costs, newCost);
+        -:  136:
+        -:  137:
+        -:  138:assertMore(costs, newCost);
+        -:  139:*/
+        -:  140:
+        1:  141:printf("\n");
+        1:  142:printf("\n");
+        1:  143:printf("\n");
+        -:  144:
+        1:  145:return 0;
+        -:  146:}

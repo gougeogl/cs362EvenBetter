@@ -750,6 +750,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case feast:
+
         //gain card with cost up to 5
         //Backup hand
         for (i = 0; i <= state->handCount[currentPlayer]; i++) {
@@ -778,7 +779,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 if (DEBUG) {
                     printf("Coins: %d < %d\n", state->coins, getCost(choice1));
                 }
-
             }
             else {
 

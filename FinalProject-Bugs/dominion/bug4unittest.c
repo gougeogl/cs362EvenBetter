@@ -9,10 +9,10 @@ void assertGameOver(struct gameState *G) {
     
     // Assertion
     if (isGameOver(G) == 1) {
-        printf("Game over status is correctly detected for 3 empty piles. No errors.\n\n");
+        printf("Game over status is correctly evaluated for 3 empty piles. No errors.\n\n");
     }
     else {
-        printf("Game over status is incorrectly detected for 3 empty piles. Error detected.\n\n");
+        printf("Game over status is incorrectly evaluated for 3 empty piles. Error encountered.\n\n");
     }  
 }
  
@@ -24,7 +24,11 @@ int main () {
     struct gameState G;
     int initResult;
 
-    printf("\n\nBegin Testing isGameOver():\n");
+    printf("****************************************\n");
+    printf("***********   BUG 4 TEST   *************\n");
+    printf("****************************************\n");
+
+    printf("\nBegin Testing isGameOver():\n");
 
     memset(&G, 23, sizeof(struct gameState)); 
 
@@ -43,6 +47,8 @@ int main () {
         G.supplyCount[26] = 0;
         
         assertGameOver(&G);
+
+        printf("\n\n");        
     }          
                                         
     return 0;

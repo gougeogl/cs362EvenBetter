@@ -9,10 +9,10 @@ void assertMineCard(int card, int choice1, int choice2, int choice3, struct game
     
     // Assertion
     if (cardEffect(card, choice1, choice2, choice3, G, handPos, bonus) == 0) {
-        printf("Choice of card to gain determined as valid. No errors.\n\n");
+        printf("Choice of card to gain evaluated as valid and was accepted. No errors.\n\n");
     }
     else {
-        printf("Choice of card to gain determined as invalid. Error encountered.\n\n");
+        printf("Choice of card to gain evaluated as invalid and was not accepted. Error encountered.\n\n");
     }
 }
  
@@ -35,7 +35,11 @@ int main () {
     int handPos;
     int *bonus;
 
-    printf("\n\nBegin Testing Mine cardEffect:\n");
+    printf("****************************************\n");
+    printf("***********   BUG 2 TEST   *************\n");
+    printf("****************************************\n");
+
+    printf("\nBegin Testing Mine cardEffect():\n");
 
     memset(&G, 23, sizeof(struct gameState)); 
 
@@ -64,9 +68,11 @@ int main () {
         choice2 = copper;   // Copper card selected to be gained
         choice3 = 0;        // Unused
         handPos = 0;        // Unused
-        bonus = NULL;      // Unused
+        bonus = NULL;       // Unused
 
         assertMineCard(card, choice1, choice2, choice3, &G, handPos, bonus);
+
+        printf("\n\n");
     }          
                                         
     return 0;

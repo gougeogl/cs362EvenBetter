@@ -3,7 +3,7 @@
 * Author:	Glen Gougeon
 * Class:	CS362 Software Engineering II
 * Created:	11-30-2019
-* Last Mod:	12-1-2019
+* Last Mod:	12-2-2019
 *
 * Assignement: Final Project Part B/
 *
@@ -254,26 +254,8 @@ void subTestTribute(
 	memset(oldState, '\0', sizeof(*oldState));
 	oldState = newState;
 
-	//printf("BEFORE CALL oldState->numActions: %d\n", oldState->numActions);
-	/*	
-	printf("handCount[currentPlayer %d]: %d\n", currentPlayer, oldState->handCount[currentPlayer]);
-	printHand(currentPlayer, newState);
-	printDeck(nextPlayer, newState);
-	printDiscard(nextPlayer, newState);
-	printf("TRACE: oldState->numActions %d\n", oldState->numActions);
-	*/	
-
 	/* CALL TO TRIBUTE <-----------------------------------------------------*/
 	cardEffect(tribute, idxOfChoice1, blank, blank, newState, tribute_index, &coinBonus);
-
-	//printf("AFTER CALL oldState->numActions: %d\n", oldState->numActions);
-	/*	
-	printf("handCount[currentPlayer %d]: %d\n", currentPlayer, newState->handCount[currentPlayer]);
-	printHand(currentPlayer, newState);
-	printDeck(nextPlayer, newState);
-	printDiscard(nextPlayer, newState);
-	printf("TRACE: newState->numActions %d\n", newState->numActions);
-	*/	
 	
 }
 
@@ -333,14 +315,14 @@ void runAsserts(struct gameState* before, struct gameState* after)
 	{
 		if (before->numActions + 2 != after->numActions)
 		{
-			printf("TRACE: totalActions %d\n", totalActions);
+			//printf("TRACE: totalActions %d\n", totalActions);
 			printf("Tribute Error: You had 1 action card in discard, but didn't gain 2 actions.\n\n");
 		}
 	}
 	else if (totalActions == 0 && (before->numActions != after->numActions))
 	{
-		printf("TRACE: totalActions %d\n", totalActions);
-		printf("TRACE: before->numActions %d, after->numActions %d\n", before->numActions, after->numActions);
+		//printf("TRACE: totalActions %d\n", totalActions);
+		//printf("TRACE: before->numActions %d, after->numActions %d\n", before->numActions, after->numActions);
 		printf("Tribute Error: You gained actions, but didn't find any action cards in discard.\n\n");
 	}
 }

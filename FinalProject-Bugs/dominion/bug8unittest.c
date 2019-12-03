@@ -38,7 +38,7 @@ printf("\n");
 
 printf("The bug thread states that 'the updateCoins function is causing a bug by simply giving the player 5 coins.'\n");
 printf("The argument is that the bonus 'gets overwritten by the updateCoins function unless its given the correct coin_bonus from playCard'.\n");
-printf("However, this is based on a misunderstanding of updateCoins() and bonus coins. Bonus coins are not meant to be persistant.\n");
+printf("However, this is based on a misunderstanding of updateCoins() and bonus coins. Bonus coins are not meant to be persistent.\n");
 printf("Rather, they are given per-turn, and reset at the end of each turn. They are intended to exist for the duration of a turn.\n");
 printf("In Baron, for example, the four coins are given by adding four coins to the state. This is the exact end result of calling updateCoins.\n");
 printf("Then, the fact that the updateCoins function wipes the coins from the state is NOT a bug, but the proper course of action for the game.\n");

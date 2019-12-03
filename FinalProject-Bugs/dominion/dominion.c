@@ -467,7 +467,7 @@ int scoreFor (int player, struct gameState *state) {
     }
 
     //score from deck
-    for (i = 0; i < state->discardCount[player]; i++)
+    for (i = 0; i < state->deckCount[player]; i++)
     {
         if (state->deck[player][i] == curse) {
             score = score - 1;
@@ -754,14 +754,24 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         //Backup hand
         for (i = 0; i <= state->handCount[currentPlayer]; i++) {
             temphand[i] = state->hand[currentPlayer][i];//Backup card
-            state->hand[currentPlayer][i] = -1;//Set to nothing
+            //state->hand[currentPlayer][i] = -1;//Set to nothing
         }
         //Backup hand
 
+        int cardCost = getCost(choice1);
+
         //Update Coins for Buy
-        updateCoins(currentPlayer, state, 5);
+        state->coins = cardCost;
+
         x = 1;//Condition to loop on
+
+        if (cardCost > 5) {
+          printf("Card too expensive, sorry!\n");
+          x = 0;
+        }
+
         while( x == 1) {//Buy one card
+
             if (supplyCount(choice1, state) <= 0) {
                 if (DEBUG)
                     printf("None of that card left, sorry!\n");
@@ -783,7 +793,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                     printf("Deck Count: %d\n", state->handCount[currentPlayer] + state->deckCount[currentPlayer] + state->discardCount[currentPlayer]);
                 }
 
-                gainCard(choice1, state, 0, currentPlayer);//Gain the card
+                gainCard(choice1, state, 2, currentPlayer);//Gain the card
+                //printf("added... %d\n", state->hand[ currentPlayer ][ state->handCount[currentPlayer]-1 ]);
                 x = 0;//No more buying cards
 
                 if (DEBUG) {
@@ -795,10 +806,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
         //Reset Hand
         for (i = 0; i <= state->handCount[currentPlayer]; i++) {
-            state->hand[currentPlayer][i] = temphand[i];
+            //state->hand[currentPlayer][i] = temphand[i];
             temphand[i] = -1;
         }
         //Reset Hand
+
+        updateCoins(currentPlayer, state, 0);
 
         return 0;
 
@@ -1370,4 +1383,3 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 
 //end of dominion.c
-

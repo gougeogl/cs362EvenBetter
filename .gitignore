@@ -1,0 +1,2 @@
+# To ignore Mac library debug files
+*.dSYM

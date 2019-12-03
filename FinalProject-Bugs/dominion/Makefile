@@ -104,7 +104,7 @@ bug11unittest: bug11unittest.c dominion.o rngs.o interface.o
 # ***********************************************************************************
 
 unittestresults: bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unittest\
-	bug5unittest bug6unittest bug7unittest bug8unittest  bug9unittest
+	bug5unittest bug6unittest bug7unittest bug8unittest  bug9unittest bug10unittest
 	./bug1unittest &> unittestresults.out
 	./bug1b_unittest >> unittestresults.out
 	./bug2unittest >> unittestresults.out
@@ -115,7 +115,7 @@ unittestresults: bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unitt
 	./bug7unittest >> unittestresults.out
 	./bug8unittest >> unittestresults.out
 	./bug9unittest >> unittestresults.out
-	#./bug10unittest >> unittestresults.out
+	./bug10unittest >> unittestresults.out
 	#./bug11unittest >> unittestresults.out
 	${COV} ${COV_FLAGS} dominion.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug1unittest.c >> unittestresults.out
@@ -128,7 +128,7 @@ unittestresults: bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unitt
 	${COV} ${COV_FLAGS} bug7unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug8unittest.c >> unittestresults.out
 	${COV} ${COV_FLAGS} bug9unittest.c >> unittestresults.out
-	#${COV} ${COV_FLAGS} bug10unittest.c >> unittestresults.out
+	${COV} ${COV_FLAGS} bug10unittest.c >> unittestresults.out
 	#${COV} ${COV_FLAGS} bug11unittest.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out
 	cat bug1unittest.c.gcov >> unittestresults.out
@@ -142,7 +142,7 @@ unittestresults: bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unitt
 	#cat bug7b_unittest.c.gcov >> unittestresults.out
 	cat bug8unittest.c.gcov >> unittestresults.out
 	cat bug9unittest.c.gcov >> unittestresults.out
-	#cat bug10unittest.c.gcov >> unittestresults.out
+	cat bug10unittest.c.gcov >> unittestresults.out
 	#cat bug11unittest.c.gcov >> unittestresults.out
 
 # ***********************************************************************************

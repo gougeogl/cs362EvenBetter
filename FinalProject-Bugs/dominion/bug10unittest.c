@@ -9,10 +9,10 @@ void assertAmbassadorCard(int card, int choice1, int choice2, int choice3, struc
     
     // Assertion
     if (cardEffect(card, choice1, choice2, choice3, G, handPos, bonus) == 0) {
-        printf("Choice and # of cards to return to supply determined as valid. No errors.\n\n");
+        printf("Attempt to return 2 valid cards to supply was accepted. No errors.\n\n");
     }
     else {
-        printf("Choice and # of cards to return to supply determined as invalid. Error encountered.\n\n");
+        printf("Attempt to return 2 valid cards to supply was not accepted. Error encountered.\n\n");
     }
 }
  
@@ -35,7 +35,11 @@ int main () {
     int handPos;
     int *bonus;
 
-    printf("\n\nBegin Testing Ambassador cardEffect:\n");
+    printf("****************************************\n");
+    printf("***********   BUG 10 TEST  *************\n");
+    printf("****************************************\n");
+
+    printf("\nBegin Testing Ambassador cardEffect():\n");
 
     memset(&G, 23, sizeof(struct gameState)); 
 
@@ -69,6 +73,8 @@ int main () {
         bonus = NULL;       // Unused
 
         assertAmbassadorCard(card, choice1, choice2, choice3, &G, handPos, bonus);
+
+        printf("\n\n");
     }          
                                         
     return 0;

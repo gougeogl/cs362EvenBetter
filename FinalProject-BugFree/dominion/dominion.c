@@ -840,8 +840,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             return -1;
         }
 
-        //gainCard(choice2, state, 0, currentPlayer);
-
         //discard card from hand
         discardCard(handPos, currentPlayer, state, 0);
 

@@ -459,7 +459,7 @@ int scoreFor (int player, struct gameState *state) {
     }
 
     //score from deck
-    for (i = 0; i < state->discardCount[player]; i++)
+    for (i = 0; i < state->deckCount[player]; i++)
     {
         if (state->deck[player][i] == curse) {
             score = score - 1;
@@ -553,7 +553,7 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state) {
 }
 
 int drawCard(int player, struct gameState *state)
-{   
+{
     int count;
     int deckCounter;
     if (state->deckCount[player] <= 0) { //Deck is empty
@@ -820,7 +820,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         //discard card from hand
         discardCard(handPos, currentPlayer, state, 0);
 
-        //find card to trash in hand equal to j 
+        //find card to trash in hand equal to j
         for (i = 0; i < state->handCount[currentPlayer]; i++)
         {
             if (state->hand[currentPlayer][i] == j)
@@ -1049,7 +1049,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
                 shuffle(nextPlayer,state);//Shuffle the deck
             }
-	    // put last card from next player's deck into tributeRevealedCards[0] 
+	    // put last card from next player's deck into tributeRevealedCards[0]
             tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	    // THEN put last card from next player's deck into their discard
 	    state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
@@ -1061,7 +1061,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	    state->discardCount[nextPlayer]++;
 	    state->deckCount[nextPlayer]--;
 
-	    // put last card from next player's deck into tributeRevealedCards[0] 
+	    // put last card from next player's deck into tributeRevealedCards[0]
             tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	    // THEN put last card from next player's deck into their discard
 	    state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
@@ -1086,37 +1086,37 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 state->coins += 2;
             }
 
-            else if (tributeRevealedCards[i] == estate || 
-		     tributeRevealedCards[i] == duchy || 
-                     tributeRevealedCards[i] == province || 
-                     tributeRevealedCards[i] == gardens || 
+            else if (tributeRevealedCards[i] == estate ||
+		     tributeRevealedCards[i] == duchy ||
+                     tributeRevealedCards[i] == province ||
+                     tributeRevealedCards[i] == gardens ||
                      tributeRevealedCards[i] == great_hall) { //Victory Card Found
 
                 	drawCard(currentPlayer, state);
                 	drawCard(currentPlayer, state);
             }
-            else if (tributeRevealedCards[i] == adventurer || 
-		     tributeRevealedCards[i] == council_room || 
-		     tributeRevealedCards[i] == mine || 
-		     tributeRevealedCards[i] == remodel || 
-		     tributeRevealedCards[i] == smithy|| 
-		     tributeRevealedCards[i] == village || 
+            else if (tributeRevealedCards[i] == adventurer ||
+		     tributeRevealedCards[i] == council_room ||
+		     tributeRevealedCards[i] == mine ||
+		     tributeRevealedCards[i] == remodel ||
+		     tributeRevealedCards[i] == smithy||
+		     tributeRevealedCards[i] == village ||
 		     tributeRevealedCards[i] == baron ||
-		     tributeRevealedCards[i] == great_hall || 
+		     tributeRevealedCards[i] == great_hall ||
 		     tributeRevealedCards[i] == steward ||
-		     tributeRevealedCards[i] == tribute || 
-		     tributeRevealedCards[i] == ambassador || 
-		     tributeRevealedCards[i] == cutpurse || 
-		     tributeRevealedCards[i] == outpost || 
-		     tributeRevealedCards[i] == salvager || 
-		     tributeRevealedCards[i] == sea_hag || 
-		     tributeRevealedCards[i] == treasure_map ){ 
+		     tributeRevealedCards[i] == tribute ||
+		     tributeRevealedCards[i] == ambassador ||
+		     tributeRevealedCards[i] == cutpurse ||
+		     tributeRevealedCards[i] == outpost ||
+		     tributeRevealedCards[i] == salvager ||
+		     tributeRevealedCards[i] == sea_hag ||
+		     tributeRevealedCards[i] == treasure_map ){
 			//printf("BEFORE state->numActions = state->numActions + 2, numActions = %d\n", state->numActions);
                 	state->numActions = state->numActions + 2;
 			//printf("AFTER state->numActions = state->numActions + 2, numActions = %d\n", state->numActions);
             }
         }
-	/*	
+	/*
 	printf("TRACE: 'tribute'\n");
 	printf("     : at end of function..\n");
 	printf("     : tributeRevealedCards[0]: %d\n", tributeRevealedCards[0]);
@@ -1133,14 +1133,14 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 		//state->discardCount[nextPlayer]++;
 	//}
 	/*
-	printf("   : discard[nextPlayer %d][-1 %d]: %d\n", 
+	printf("   : discard[nextPlayer %d][-1 %d]: %d\n",
 			nextPlayer, state->discardCount[nextPlayer] -1, state->discard[nextPlayer][state->discardCount[nextPlayer] -1]);
-	printf("   : discard[nextPlayer %d][-2 %d]: %d\n", 
+	printf("   : discard[nextPlayer %d][-2 %d]: %d\n",
 			nextPlayer, state->discardCount[nextPlayer] -2, state->discard[nextPlayer][state->discardCount[nextPlayer] -2]);
 	printf("   : state->numActions now %d\n", state->numActions);
-	
+
 	printf("END TRACE 'tribute' ==========================================================================\n");
-	*/	
+	*/
         return 0;
 
     case ambassador:
@@ -1441,4 +1441,3 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 
 //end of dominion.c
-

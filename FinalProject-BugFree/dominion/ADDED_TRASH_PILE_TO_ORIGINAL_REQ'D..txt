@@ -1,8 +1,0 @@
-REQ'D. TO BE ADDED TO ORIGINAL FOR TESTING:
-In initalizeGame()
-	state->trashCount = 0; // req'd. for testing
-	state->trashPile[state->trashCount] = -1; // req'd. for testing
-
-In struct gameState
-	int trashCount; // <-- req'd. to test against
-	int trashPile[MAX_DECK]; // req'd. to test against

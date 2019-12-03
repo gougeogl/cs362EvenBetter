@@ -298,14 +298,11 @@ void runAsserts(struct gameState* before, struct gameState* after)
 	{
 		if (before->numActions + 2 != after->numActions)
 		{
-			printf("TRACE: totalActions %d\n", totalActions);
 			printf("Tribute Error: You had 1 action card in discard, but didn't gain 2 actions.\n\n");
 		}
 	}
 	else if (totalActions == 0 && (before->numActions != after->numActions))
 	{
-		printf("TRACE: totalActions %d\n", totalActions);
-		printf("TRACE: before->numActions %d, after->numActions %d\n", before->numActions, after->numActions);
 		printf("Tribute Error: You gained actions, but didn't find any action cards in discard.\n\n");
 	}
 }

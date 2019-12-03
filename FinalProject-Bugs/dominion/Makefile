@@ -163,3 +163,4 @@ clean:
 	rm -f bug1unittest bug1b_unittest bug2unittest bug3unittest bug4unittest
 	rm -f bug5unittest bug6unittest bug7unittest bug8unittest
 	rm -f bug9unittest bug10unittest bug11unittest
+	rm -rf *.dSYM
